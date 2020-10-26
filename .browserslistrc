@@ -1,0 +1,30 @@
+> 1% in NL
+not dead
+
+# https://docs.microsoft.com/en-us/office/dev/add-ins/concepts/browsers-used-by-office-web-add-ins
+Explorer >= 11
+Edge >= 40 # EdgeHTML engine
+
+# https://docs.microsoft.com/en-us/office/dev/add-ins/concepts/requirements-for-running-office-add-ins
+last 1 Edge versions
+Firefox ESR
+last 1 Firefox versions
+last 1 Chrome versions
+last 1 Safari versions
+last 1 Opera versions
+last 1 iOS versions
+last 3 Android versions
+last 1 OperaMobile versions
+last 1 ChromeAndroid versions
+last 1 FirefoxAndroid versions
+last 1 Samsung versions
+
+not Baidu > 0
+not BlackBerry > 0
+not ExplorerMobile > 0
+not op_mini > 0
+not QQAndroid > 0
+not UCAndroid > 0
+not kaios > 0
+
+not unreleased versions

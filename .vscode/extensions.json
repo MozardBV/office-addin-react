@@ -1,0 +1,25 @@
+{
+  // See http://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+  // List of extensions which should be recommended for users of this workspace.
+  "recommendations": [
+    // Lint-on-save markdown in README files
+    // https://github.com/DavidAnson/vscode-markdownlint
+    "DavidAnson.vscode-markdownlint",
+    // Lint-on-save met ESLint
+    // https://github.com/microsoft/vscode-eslint
+    "dbaeumer.vscode-eslint",
+    // Format-on-save met Prettier
+    // https://github.com/prettier/prettier-vscode
+    "esbenp.prettier-vscode",
+
+    // Lint-on-save met Stylelint
+    // https://github.com/stylelint/vscode-stylelint
+    "stylelint.vscode-stylelint",
+
+    // Debuggers
+    "msjsdiag.debugger-for-chrome",
+    "msjsdiag.debugger-for-edge"
+  ]
+}

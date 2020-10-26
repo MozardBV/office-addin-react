@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="nl-NL" data-framework="javascript">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mozard Officeintegratie</title>
+    <%= mode === 'development' ? '<!-- https://developer.microsoft.com/fabric -->' : '' %>
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"/>
+    <%= mode === 'development' ? '<!-- Template styles -->' : '' %>
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <%= mode === 'development' ? '<script type="text/javascript" src="https://localhost:8097"></script>' : '' %>
+    <%= mode === 'development' ? '<!-- Office JavaScript API -->' : '' %>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <meta name="application-name" content="Mozard+Office">
+    <meta name="theme-color" content="#faca17">
+    <meta name="description" content="Integratie tussen het Mozard zaaksysteem en Microsoft Office">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="googlebot" content="noindex,nofollow">
+    <meta name="google" content="nositelinkssearchbox">
+    <meta name="google" content="notranslate">
+    <meta name="generator" content="Webpack">
+    <meta name="subject" content="Officeintegratie">
+    <meta name="rating" content="General">
+    <meta name="referrer" content="no-referrer">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+    <meta name="ICBM" content="52.0401121, 4.373597">
+    <meta name="geo.position" content="52.0401121;4.373597">
+    <meta name="geo.region" content="nl-zh">
+    <meta name="geo.placename" content="Nootdorp">
+    <link rel="license" href="https://www.mozard.nl/mozard/!suite86.scherm0325?mPag=204&mLok=1">
+    <meta name="apple-mobile-web-app-title" content="Mozard+Office">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="skype_toolbar" content="skype_toolbar_parser_compatible">
+  </head>
+  <body class="ms-Fabric ms-font-m">
+    <div id="container"></div>
+  </body>
+</html>

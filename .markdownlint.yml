@@ -1,0 +1,10 @@
+# https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md
+
+default: true
+
+# Geen restrictie op regellengte, zodat we editor softwrapping kunnen gebruiken
+line-length: false
+
+# Prettier overrides
+no-multiple-blanks: false
+list-marker-space: false
