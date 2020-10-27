@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://intranet.mozard.nl/mozard/!suite06.scherm1089?mWfr=604&mDv=990842"
   },
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-or-later",
   "author": "Mozard BV",
   "contributors": [
     "Patrick Godschalk <p.godschalk@ienpm.nl>"
