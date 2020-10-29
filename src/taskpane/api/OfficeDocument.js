@@ -56,10 +56,9 @@ export default class OfficeDocument {
     });
   }
 
-  static getFile() {
-    // 4 MB slice size
+  static getFile(sliceSize) {
     return new OfficeExtension.Promise((resolve, reject) => {
-      Office.context.document.getFileAsync("compressed", { sliceSize: 4194304 }, (result) => {
+      Office.context.document.getFileAsync("compressed", { sliceSize }, (result) => {
         // eslint-disable-next-line eqeqeq
         if (result.status == Office.AsyncResultStatus.Succeeded) {
           resolve({

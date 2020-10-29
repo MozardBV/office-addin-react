@@ -46,6 +46,7 @@ export default class ViewMain extends React.Component {
       dossierId: "",
       dossierIdFromUser: false,
       initialized: false,
+      platform: "",
       progress: {
         description: "",
         label: "Klaar om te verzenden",
@@ -128,6 +129,7 @@ export default class ViewMain extends React.Component {
         {
           auth: this.state.auth,
           env: this.state.env,
+          platform: this.state.platform,
         },
         {
           documentExtension: this.state.documentExtension,
@@ -205,6 +207,8 @@ export default class ViewMain extends React.Component {
         version: items[2],
       };
     };
+
+    this.setState({ platform: getHostInfo().platform });
 
     switch (getHostInfo().type) {
       case "Word":

@@ -42,7 +42,14 @@ export default class Middleware {
   }
 
   static async sendFile(progressCallback, userProperties, documentProperties) {
-    OfficeDocument.getFile().then((file) => {
+    let sliceSize;
+    if (userProperties.platform === "iOS") {
+      sliceSize = 65536; // 64 KB
+    } else {
+      sliceSize = 4194304; // 4 MB
+    }
+
+    OfficeDocument.getFile(sliceSize).then((file) => {
       progressCallback(undefined, `Bezig met ophalen bestand (${parseFloat(file.file.size / 1048576).toFixed(2)} MiB)`);
 
       const boundary = Date.now().toString();
