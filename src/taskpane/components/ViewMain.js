@@ -39,11 +39,14 @@ export default class ViewMain extends React.Component {
       env: "",
       documentExtension: "",
       documentId: "",
+      documentIdErrorMessage: "",
       documentIdFromDocument: undefined,
       documentIdFromDocumentPrevious: undefined,
       documentName: "",
+      documentNameErrorMessage: "",
       documentType: "",
       dossierId: "",
+      dossierIdErrorMessage: "",
       dossierIdFromUser: false,
       initialized: false,
       platform: "",
@@ -119,6 +122,21 @@ export default class ViewMain extends React.Component {
       return;
     }
 
+    if (!this.state.documentId) {
+      this.setState({ documentIdErrorMessage: "Fout: geen documentnummer opgegeven" });
+      return;
+    }
+
+    if (!this.state.documentName) {
+      this.setState({ dossierIdErrorMessage: "Fout: geen documentnaam opgegeven" });
+      return;
+    }
+
+    if (!this.state.dossierId) {
+      this.setState({ dossierIdErrorMessage: "Fout: geen zaaknummer opgegeven" });
+      return;
+    }
+
     this.setState({
       showError: false,
       showProgress: true,
@@ -171,6 +189,11 @@ export default class ViewMain extends React.Component {
   }
 
   submitNew() {
+    if (!this.state.dossierId) {
+      this.setState({ dossierIdErrorMessage: "Fout: geen zaaknummer opgegeven " });
+      return;
+    }
+
     this.setState({
       dossierIdFromUser: true,
       showError: false,
@@ -271,9 +294,12 @@ export default class ViewMain extends React.Component {
         {this.state.documentIdFromDocument === false && (
           <form className="mt-4 px-4" onSubmit={this.formPreventDefault}>
             <TextField
+              aria-required
+              errorMessage={this.state.dossierIdErrorMessage}
               label="Zaaknummer (nieuw document)"
               onChange={this.handleDossierIdChange}
               prefix="z"
+              required
               type="number"
               value={this.state.dossierId}
             />
@@ -287,9 +313,12 @@ export default class ViewMain extends React.Component {
               <div>
                 <hr className="mb-4 mt-8" />
                 <TextField
+                  aria-required
+                  errorMessage={this.state.documentIdErrorMessage}
                   label="Documentnummer (nieuwe versie)"
                   onChange={this.handleDocumentIdChange}
                   prefix="d"
+                  required
                   type="number"
                   value={this.state.documentId}
                 />
@@ -324,9 +353,12 @@ export default class ViewMain extends React.Component {
         {this.state.showSelectDocumentType && (
           <form className="mt-2 px-4" onSubmit={this.formPreventDefault}>
             <TextField
+              aria-required
               defaultValue={this.state.documentName}
+              errorMessage={this.state.documentNameErrorMessage}
               label="Documentnaam"
               onChange={this.handleDocumentNameChange}
+              required
               suffix={`.${this.state.documentExtension}`}
               type="text"
             />
