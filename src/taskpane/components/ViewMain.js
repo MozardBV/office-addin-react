@@ -84,6 +84,15 @@ export default class ViewMain extends React.Component {
   }
 
   handlePromptAsNew() {
+    if (!this.state.auth || !this.state.env) {
+      this.setState({
+        showError:
+          "Fout: Geen functieverband en/of omgeving gekoppeld. Koppel een functieverband bij het tandwiel rechtsonder.",
+        showProgress: false,
+      });
+      return;
+    }
+
     this.setState({
       documentIdFromDocumentPrevious: this.state.documentIdFromDocument,
       documentIdFromDocument: false,
@@ -101,6 +110,15 @@ export default class ViewMain extends React.Component {
   }
 
   sendFile(event) {
+    if (!this.state.auth || !this.state.env) {
+      this.setState({
+        showError:
+          "Fout: Geen functieverband en/of omgeving gekoppeld. Koppel een functieverband bij het tandwiel rechtsonder.",
+        showProgress: false,
+      });
+      return;
+    }
+
     this.setState({
       showError: false,
       showProgress: true,
