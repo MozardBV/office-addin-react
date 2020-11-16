@@ -31,6 +31,7 @@ export default class ViewSettings extends React.Component {
       envId: uuidv4(),
       authErrorMessage: "",
       envErrorMessage: "",
+      showSuccess: false,
     };
     this.handleAuthChange = this.handleAuthChange.bind(this);
     this.handleEnvChange = this.handleEnvChange.bind(this);
@@ -56,6 +57,7 @@ export default class ViewSettings extends React.Component {
       this.setState({
         authErrorMessage: false,
         envErrorMessage: false,
+        showSuccess: "Je instellingen zijn opgeslagen!",
       });
       localStorage.setItem(
         "currentFnvb",
@@ -118,6 +120,12 @@ export default class ViewSettings extends React.Component {
           </TooltipHost>
           <DefaultButton className="mt-4 w-100" onClick={this.saveFnvb} primary text="Opslaan" />
         </form>
+        {this.state.showSuccess && (
+          <div className="success text-p-4 center w-100">
+            <span aria-hidden="true" className="mr-4 ms-fontSize-24 ms-Icon ms-Icon--Accept"></span>
+            <span>{this.state.showSuccess}</span>
+          </div>
+        )}
       </div>
     );
   }

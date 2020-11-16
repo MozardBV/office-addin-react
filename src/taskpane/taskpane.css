@@ -481,26 +481,44 @@ b {
   text-align: left;
 }
 
+.success,
 .error,
 .progress {
   position: absolute;
   bottom: 5rem;
 }
 
+.success,
 .error {
   box-sizing: border-box;
   padding: 1rem;
   text-align: center;
+}
+
+.success {
+  background-color: hsl(115, 58%, 92%);
+}
+
+.error {
   background-color: rgb(254, 217, 204);
 }
 
+.success span,
 .error span {
   position: relative;
   top: -5px;
 }
 
+.success .ms-Icon,
 .error .ms-Icon {
   top: 2px;
+}
+
+.success .ms-Icon {
+  color: hsl(120, 77%, 27%);
+}
+
+.error .ms-Icon {
   color: hsl(0, 100%, 33%);
 }
 
