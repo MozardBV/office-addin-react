@@ -460,6 +460,16 @@ b {
   padding-bottom: 0;
 }
 
+@media (max-height: 670px) {
+  .ms-welcome__header {
+    padding-top: 0;
+  }
+
+  .ms-welcome__header > div {
+    display: none;
+  }
+}
+
 .logo-cls-1 {
   fill: hsl(51, 99%, 47%);
 }
