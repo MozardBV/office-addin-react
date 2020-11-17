@@ -22,16 +22,12 @@ export default class Middleware {
     return new Promise((resolve, reject) => {
       const boundary = `boundary_string_${Date.now().toString()}`;
       axios
-        .post(
-          `https://officetest.mozard.nl/public/index.php?destdossier=${documentProperties.dossierId}&destomgeving=${userProperties.env}`,
-          "",
-          {
-            headers: {
-              Authorization: `MOZTOKEN appcode=${userProperties.auth}`,
-              "Content-Type": `multipart/form-data; boundary="${boundary}"`,
-            },
-          }
-        )
+        .post(`/public/index.php?destdossier=${documentProperties.dossierId}&destomgeving=${userProperties.env}`, "", {
+          headers: {
+            Authorization: `MOZTOKEN appcode=${userProperties.auth}`,
+            "Content-Type": `multipart/form-data; boundary="${boundary}"`,
+          },
+        })
         .then((res) => {
           resolve(res);
         })
@@ -60,7 +56,7 @@ export default class Middleware {
 
           axios
             .post(
-              `https://officetest.mozard.nl/public/index.php?destdossier=${documentProperties.dossierId}&destdocnummer=${documentProperties.documentId}&destdoctype=${documentProperties.documentType}&destomgeving=${userProperties.env}`,
+              `/public/index.php?destdossier=${documentProperties.dossierId}&destdocnummer=${documentProperties.documentId}&destdoctype=${documentProperties.documentType}&destomgeving=${userProperties.env}`,
               slice.buffer,
               {
                 headers: {
