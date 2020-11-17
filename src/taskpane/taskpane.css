@@ -460,7 +460,7 @@ b {
   padding-bottom: 0;
 }
 
-@media (max-height: 670px) {
+@media (max-height: 725px) {
   .ms-welcome__header {
     padding-top: 0;
   }
@@ -491,11 +491,21 @@ b {
   text-align: left;
 }
 
-.success,
-.error,
-.progress {
-  position: absolute;
-  bottom: 5rem;
+@media (min-height: 591px) {
+  .success,
+  .error,
+  .progress {
+    position: absolute;
+    bottom: 5rem;
+  }
+}
+
+@media (max-height: 590px) {
+  .success,
+  .error,
+  .progress {
+    margin-top: 2rem;
+  }
 }
 
 .success,
