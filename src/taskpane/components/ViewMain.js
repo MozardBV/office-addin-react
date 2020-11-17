@@ -45,6 +45,7 @@ export default class ViewMain extends React.Component {
       documentName: "",
       documentNameErrorMessage: "",
       documentType: "",
+      documentTypeErrorMessage: "",
       dossierId: "",
       dossierIdErrorMessage: "",
       dossierIdFromUser: false,
@@ -123,17 +124,21 @@ export default class ViewMain extends React.Component {
     }
 
     if (!this.state.documentId) {
-      this.setState({ documentIdErrorMessage: "Fout: geen documentnummer opgegeven" });
+      this.setState({ documentIdErrorMessage: "Fout: geen of ongeldig documentnummer opgegeven" });
       return;
     }
 
     if (!this.state.documentName) {
-      this.setState({ dossierIdErrorMessage: "Fout: geen documentnaam opgegeven" });
+      this.setState({ documentNameErrorMessage: "Fout: geen documentnaam opgegeven" });
       return;
     }
 
+    if (this.state.responseDocumentTypes && !this.state.documentType) {
+      this.setState({ documentTypeErrorMessage: "Fout: geen documenttype opgegeven" });
+    }
+
     if (!this.state.dossierId) {
-      this.setState({ dossierIdErrorMessage: "Fout: geen zaaknummer opgegeven" });
+      this.setState({ dossierIdErrorMessage: "Fout: geen of ongeldig zaaknummer opgegeven" });
       return;
     }
 
