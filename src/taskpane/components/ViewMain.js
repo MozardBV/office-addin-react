@@ -113,7 +113,17 @@ export default class ViewMain extends React.Component {
     event.preventDefault();
   }
 
+  reload() {
+    window.location.reload();
+  }
+
   sendFile(event) {
+    this.setState({
+      documentIdErrorMessage: "",
+      documentNameErrorMessage: "",
+      documentTypeErrorMessage: "",
+    });
+
     if (!this.state.auth || !this.state.env) {
       this.setState({
         showError:
@@ -128,17 +138,33 @@ export default class ViewMain extends React.Component {
       return;
     }
 
-    if (!this.state.documentName) {
+    if (Object.keys(this.state.responseDocumentTypes).length !== 0 && !this.state.documentName) {
       this.setState({ documentNameErrorMessage: "Fout: geen documentnaam opgegeven" });
       return;
     }
 
-    if (this.state.responseDocumentTypes && !this.state.documentType) {
-      this.setState({ documentTypeErrorMessage: "Fout: geen documenttype opgegeven" });
+    if (this.state.documentName) {
+      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%"];
+      const invalid = [];
+
+      disallowedChars.forEach((char) => {
+        if (this.state.documentName.includes(char)) {
+          invalid.push(char);
+        }
+      });
+
+      if (invalid.length > 0) {
+        console.log(invalid);
+
+        this.setState({
+          documentNameErrorMessage: `Fout: ongeldige tekens in documentnaam (${invalid.join(", ")})`,
+        });
+        return;
+      }
     }
 
-    if (!this.state.dossierId) {
-      this.setState({ dossierIdErrorMessage: "Fout: geen of ongeldig zaaknummer opgegeven" });
+    if (Object.keys(this.state.responseDocumentTypes).length !== 0 && !this.state.documentType) {
+      this.setState({ documentTypeErrorMessage: "Fout: geen documenttype opgegeven" });
       return;
     }
 
@@ -194,8 +220,10 @@ export default class ViewMain extends React.Component {
   }
 
   submitNew() {
+    this.setState({ dossierIdErrorMessage: "" });
+
     if (!this.state.dossierId) {
-      this.setState({ dossierIdErrorMessage: "Fout: geen zaaknummer opgegeven " });
+      this.setState({ dossierIdErrorMessage: "Fout: geen of ongeldig zaaknummer opgegeven" });
       return;
     }
 
@@ -368,6 +396,7 @@ export default class ViewMain extends React.Component {
               type="text"
             />
             <Dropdown
+              errorMessage={this.state.documentTypeErrorMessage}
               label="Documenttype"
               onChange={this.handleDocumentTypeChange}
               options={this.state.responseDocumentTypes.map((type) => {
@@ -380,6 +409,12 @@ export default class ViewMain extends React.Component {
             />
             <PrimaryButton className="mt-4 w-100" onClick={this.sendFile} text="Verzenden" />
           </form>
+        )}
+
+        {this.state.progress.percentComplete === 100 && Object.keys(this.state.responseDocumentTypes).length !== 0 && (
+          <div className="px-4">
+            <DefaultButton className="mt-4 w-100" onClick={this.reload} text="Terug naar start" />
+          </div>
         )}
 
         {this.state.showError && (
