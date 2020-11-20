@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import {
   DefaultButton,
   Dropdown,
@@ -30,162 +30,136 @@ import Header from "./Header";
 import Middleware from "../api/Middleware";
 import OfficeDocument from "../api/OfficeDocument";
 
-export default class ViewMain extends React.Component {
-  constructor() {
-    super();
+function ViewMain() {
+  const [auth, setAuth] = useState("");
+  const [env, setEnv] = useState("");
+  const [documentExtension, setDocumentExtension] = useState("");
+  const [documentId, setDocumentId] = useState("");
+  const [documentIdErrorMessage, setDocumentIdErrorMessage] = useState("");
+  const [documentIdFromDocument, setDocumentIdFromDocument] = useState(undefined);
+  const [documentIdFromDocumentPrevious, setDocumentIdFromDocumentPrevious] = useState(undefined);
+  const [documentName, setDocumentName] = useState("");
+  const [documentNameErrorMessage, setDocumentNameErrorMessage] = useState("");
+  const [documentType, setDocumentType] = useState("");
+  const [documentTypeErrorMessage, setDocumentTypeErrorMessage] = useState("");
+  const [dossierId, setDossierId] = useState("");
+  const [dossierIdErrorMessage, setDossierIdErrorMessage] = useState("");
+  const [dossierIdFromUser, setDossierIdFromUser] = useState("");
+  const [initialized, setInitialized] = useState(false);
+  const [platform, setPlatform] = useState("");
+  const [progress, setProgress] = useState({
+    description: "",
+    label: "Klaar om te verzenden",
+    percentComplete: 0,
+  });
+  const [responseDocumentTypes, setResponseDocumentTypes] = useState({});
+  const [showError, setShowError] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
+  const [showSelectDocumentType, setShowSelectDocumentType] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
-    this.state = {
-      auth: "",
-      env: "",
-      documentExtension: "",
-      documentId: "",
-      documentIdErrorMessage: "",
-      documentIdFromDocument: undefined,
-      documentIdFromDocumentPrevious: undefined,
-      documentName: "",
-      documentNameErrorMessage: "",
-      documentType: "",
-      documentTypeErrorMessage: "",
-      dossierId: "",
-      dossierIdErrorMessage: "",
-      dossierIdFromUser: false,
-      initialized: false,
-      platform: "",
-      progress: {
-        description: "",
-        label: "Klaar om te verzenden",
-        percentComplete: 0,
-      },
-      responseDocumentTypes: {},
-      showError: false,
-      showProgress: true,
-      showSelectDocumentType: false,
-      showSpinner: false,
-    };
-    this.handleDossierIdChange = this.handleDossierIdChange.bind(this);
-    this.handleDocumentIdChange = this.handleDocumentIdChange.bind(this);
-    this.handleDocumentNameChange = this.handleDocumentNameChange.bind(this);
-    this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
-    this.handlePromptAsNew = this.handlePromptAsNew.bind(this);
-    this.sendFile = this.sendFile.bind(this);
-    this.submitNew = this.submitNew.bind(this);
-  }
+  const handleDocumentIdChange = (event) => {
+    setDocumentId(event.target.value);
+  };
 
-  handleDocumentIdChange(event) {
-    this.setState({ documentId: event.target.value });
-  }
+  const handleDocumentNameChange = (event) => {
+    setDocumentName(event.target.value);
+  };
 
-  handleDocumentNameChange(event) {
-    this.setState({ documentName: event.target.value });
-  }
+  const handleDocumentTypeChange = (event, option) => {
+    setDocumentType(option.text);
+  };
 
-  handleDocumentTypeChange(event, option) {
-    this.setState({ documentType: option.text });
-  }
+  const handleDossierIdChange = (event) => {
+    setDossierId(event.target.value);
+  };
 
-  handleDossierIdChange(event) {
-    this.setState({ dossierId: event.target.value });
-  }
-
-  handlePromptAsNew() {
-    if (!this.state.auth || !this.state.env) {
-      this.setState({
-        showError:
-          "Fout: Geen functieverband en/of omgeving gekoppeld. Koppel een functieverband bij het tandwiel rechtsonder.",
-        showProgress: false,
-      });
+  const handlePromptAsNew = () => {
+    if (!auth || !env) {
+      setShowError(
+        "Fout: Geen functieverband en/of omgeving gekoppeld. Koppel een functieverband bij het tandwiel rechtsonder."
+      );
+      setShowProgress(false);
       return;
     }
 
-    this.setState({
-      documentIdFromDocumentPrevious: this.state.documentIdFromDocument,
-      documentIdFromDocument: false,
-      progress: {
-        description: "",
-        label: "Klaar om te verzenden",
-        percentComplete: 0,
-      },
-      showError: false,
+    setDocumentIdFromDocumentPrevious(documentIdFromDocument);
+    setDocumentIdFromDocument(false);
+    setProgress({
+      description: "",
+      label: "Klaar om te verzenden",
+      percentComplete: 0,
     });
-  }
+    setShowError(false);
+  };
 
-  preventFormSubmit(event) {
+  const formPreventDefault = (event) => {
     event.preventDefault();
-  }
+  };
 
-  reload() {
+  const reload = () => {
     window.location.reload();
-  }
+  };
 
-  sendFile(event) {
-    this.setState({
-      documentIdErrorMessage: "",
-      documentNameErrorMessage: "",
-      documentTypeErrorMessage: "",
-    });
+  const sendFile = (event) => {
+    setDocumentIdErrorMessage("");
+    setDocumentNameErrorMessage("");
+    setDocumentTypeErrorMessage("");
 
-    if (!this.state.auth || !this.state.env) {
-      this.setState({
-        showError:
-          "Fout: Geen functieverband en/of omgeving gekoppeld. Koppel een functieverband bij het tandwiel rechtsonder.",
-        showProgress: false,
-      });
+    if (!auth || !env) {
+      setShowError(
+        "Fout: Geen functieverband en/of omgeving gekoppeld. Koppel een functieverband bij het tandwiel rechtsonder."
+      );
+      setShowProgress(false);
       return;
     }
 
-    if (!this.state.documentId) {
-      this.setState({ documentIdErrorMessage: "Fout: geen of ongeldig documentnummer opgegeven" });
+    if (!documentId) {
+      setDocumentIdErrorMessage("Fout: geen of ongeldig documentnummer opgegeven");
       return;
     }
 
-    if (Object.keys(this.state.responseDocumentTypes).length !== 0 && !this.state.documentName) {
-      this.setState({ documentNameErrorMessage: "Fout: geen documentnaam opgegeven" });
+    if (Object.keys(responseDocumentTypes).length !== 0 && !documentName) {
+      setDocumentNameErrorMessage("Fout: geen documentnaam opgegeven");
       return;
     }
 
-    if (this.state.documentName) {
+    if (documentName) {
       const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%"];
       const invalid = [];
 
       disallowedChars.forEach((char) => {
-        if (this.state.documentName.includes(char)) {
+        if (documentName.includes(char)) {
           invalid.push(char);
         }
       });
 
       if (invalid.length > 0) {
         console.log(invalid);
-
-        this.setState({
-          documentNameErrorMessage: `Fout: ongeldige tekens in documentnaam (${invalid.join(", ")})`,
-        });
+        setDocumentNameErrorMessage(`Fout: ongeldige tekens in documentnaam (${invalid.join(", ")})`);
         return;
       }
     }
 
-    if (Object.keys(this.state.responseDocumentTypes).length !== 0 && !this.state.documentType) {
-      this.setState({ documentTypeErrorMessage: "Fout: geen documenttype opgegeven" });
+    if (Object.keys(responseDocumentTypes).length !== 0 && !documentType) {
+      setDocumentTypeErrorMessage("Fout: geen documenttype opgegeven");
       return;
     }
 
-    this.setState({
-      showError: false,
-      showProgress: true,
-    });
+    setShowError(false);
+    setShowProgress(true);
 
     const progressCallback = (percentComplete, description, label) => {
-      this.setState({
-        progress: {
-          description,
-          label: label || "Bezig met verzenden",
-          percentComplete,
-        },
-        showProgress: true,
+      setProgress({
+        description,
+        label: label || "Bezig met verzenden",
+        percentComplete,
       });
+      setShowProgress(true);
     };
 
-    if (!this.state.documentIdFromDocument) {
-      OfficeDocument.setDocumentId(this.state.documentId).catch((e) => {
+    if (!documentIdFromDocument) {
+      OfficeDocument.setDocumentId(documentId).catch((e) => {
         console.info(e);
       });
     }
@@ -194,77 +168,67 @@ export default class ViewMain extends React.Component {
       Middleware.sendFile(
         progressCallback,
         {
-          auth: this.state.auth,
-          env: this.state.env,
-          platform: this.state.platform,
+          auth,
+          env,
+          platform,
         },
         {
-          documentExtension: this.state.documentExtension,
-          documentId: this.state.documentId,
-          documentName: this.state.documentName,
-          documentType: this.state.documentType,
-          dossierId: this.state.dossierId,
+          documentExtension,
+          documentId,
+          documentName,
+          documentType,
+          dossierId,
         }
       );
     } catch (e) {
       console.error(e);
-      this.setState({
-        progress: {
-          description: "",
-          percentComplete: undefined,
-        },
-        showError: e,
-        showProgress: false,
+      setProgress({
+        description: "",
+        percentComplete: undefined,
       });
+      setShowError(e);
+      setShowProgress(false);
     }
-  }
+  };
 
-  submitNew() {
-    this.setState({ dossierIdErrorMessage: "" });
+  const submitNew = () => {
+    setDossierIdErrorMessage("");
 
-    if (!this.state.dossierId) {
-      this.setState({ dossierIdErrorMessage: "Fout: geen of ongeldig zaaknummer opgegeven" });
+    if (!dossierId) {
+      setDossierIdErrorMessage("Fout: geen of ongeldig zaaknummer opgegeven");
       return;
     }
 
-    this.setState({
-      dossierIdFromUser: true,
-      showError: false,
-      showSpinner: true,
-    });
+    setDossierIdFromUser(true);
+    setShowError(false);
+    setShowSpinner(true);
 
     Middleware.getDocTypes(
       {
-        auth: this.state.auth,
-        env: this.state.env,
+        auth,
+        env,
       },
-      { dossierId: this.state.dossierId }
+      { dossierId }
     )
       .then((res) => {
-        this.setState({
-          documentId: res.data.moz_vnr_document,
-          responseDocumentTypes: res.data.moz_vnr_documenttypen.moz_vnr_documenttype,
-          showSelectDocumentType: true,
-          showSpinner: false,
-        });
+        setDocumentId(res.data.moz_vnr_document);
+        setResponseDocumentTypes(res.data.moz_vnr_documenttypen.moz_vnr_documenttype);
+        setShowSelectDocumentType(true);
+        setShowSpinner(false);
       })
       .catch((e) => {
-        this.setState({
-          showError: "Fout: Geen privileges",
-          showProgress: false,
-          showSpinner: false,
-        });
+        setShowError("Fout: Geen privileges");
+        setShowProgress(false);
+        setShowSpinner(false);
         console.error(e);
       });
-  }
+  };
 
-  componentDidMount() {
+  useEffect(() => {
     if (localStorage.getItem("currentFnvb")) {
-      const currentFnvb = JSON.parse(localStorage.getItem("currentFnvb"));
-      this.setState({
-        auth: currentFnvb.auth,
-        env: currentFnvb.env,
-      });
+      const { auth, env } = JSON.parse(localStorage.getItem("currentFnvb"));
+      setAuth(auth);
+      setEnv(env);
     }
 
     const getHostInfo = () => {
@@ -282,164 +246,160 @@ export default class ViewMain extends React.Component {
       };
     };
 
-    this.setState({ platform: getHostInfo().platform });
+    setPlatform(getHostInfo().platform);
 
     switch (getHostInfo().type) {
       case "Word":
-        this.setState({ documentExtension: "docx" });
+        setDocumentExtension("docx");
         break;
       case "Excel":
-        this.setState({ documentExtension: "xlsx" });
+        setDocumentExtension("xlsx");
         break;
       case "Powerpoint":
-        this.setState({ documentExtension: "pptx" });
+        setDocumentExtension("pptx");
         break;
       default:
-        this.setState({ documentExtension: "" });
+        setDocumentExtension("");
         break;
     }
 
     OfficeDocument.getDocumentId()
       .then((res) => {
-        this.setState({
-          documentId: res.value,
-          documentIdFromDocument: true,
-          initialized: true,
-          progress: {
-            description: `Nieuwe versie van d${res.value}`,
-            label: "Klaar om te verzenden",
-            percentComplete: 0,
-          },
+        setDocumentId(res.value);
+        setDocumentIdFromDocument(true);
+        setInitialized(true);
+        setProgress({
+          description: `Nieuwe versie van d${res.value}`,
+          label: "Klaar om te verzenden",
+          percentComplete: 0,
         });
       })
       .catch((e) => {
-        this.setState({
-          documentIdFromDocument: false,
-          initialized: true,
-        });
+        setDocumentIdFromDocument(false);
+        setInitialized(true);
       });
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className="view-main">
-        <Header />
-        {this.state.documentIdFromDocument === false && (
-          <form className="mt-4 px-4" onSubmit={this.formPreventDefault}>
-            <TextField
-              aria-required
-              errorMessage={this.state.dossierIdErrorMessage}
-              label="Zaaknummer (nieuw document)"
-              onChange={this.handleDossierIdChange}
-              prefix="z"
-              required
-              type="number"
-              value={this.state.dossierId}
-            />
-            <PrimaryButton
-              className="mt-4 w-100"
-              iconProps={{ iconName: "Add" }}
-              onClick={this.submitNew}
-              text="Verzenden als nieuw document"
-            />
-            {!this.state.documentIdFromDocumentPrevious && !this.state.dossierIdFromUser && (
-              <div>
-                <hr className="mb-4 mt-8" />
-                <TextField
-                  aria-required
-                  errorMessage={this.state.documentIdErrorMessage}
-                  label="Documentnummer (nieuwe versie)"
-                  onChange={this.handleDocumentIdChange}
-                  prefix="d"
-                  required
-                  type="number"
-                  value={this.state.documentId}
-                />
-                <PrimaryButton
-                  className="mt-4 w-100"
-                  iconProps={{ iconName: "Refresh" }}
-                  onClick={this.sendFile}
-                  text="Verzenden als nieuwe versie"
-                />
-              </div>
-            )}
-          </form>
-        )}
+  return (
+    <div className="view-main">
+      <Header />
+      {documentIdFromDocument === false && (
+        <form className="mt-4 px-4" onSubmit={formPreventDefault}>
+          <TextField
+            aria-required
+            errorMessage={dossierIdErrorMessage}
+            label="Zaaknummer (nieuw document)"
+            onChange={handleDossierIdChange}
+            prefix="z"
+            required
+            type="number"
+            value={dossierId}
+          />
+          <PrimaryButton
+            className="mt-4 w-100"
+            iconProps={{ iconName: "Add" }}
+            onClick={submitNew}
+            text="Verzenden als nieuw document"
+          />
+          {!documentIdFromDocumentPrevious && !dossierIdFromUser && (
+            <div>
+              <hr className="mb-4 mt-8" />
+              <TextField
+                aria-required
+                errorMessage={documentIdErrorMessage}
+                label="Documentnummer (nieuwe versie)"
+                onChange={handleDocumentIdChange}
+                prefix="d"
+                required
+                type="number"
+                value={documentId}
+              />
+              <PrimaryButton
+                className="mt-4 w-100"
+                iconProps={{ iconName: "Refresh" }}
+                onClick={sendFile}
+                text="Verzenden als nieuwe versie"
+              />
+            </div>
+          )}
+        </form>
+      )}
 
-        {this.state.documentIdFromDocument && (
-          <form className="px-4" onSubmit={this.formPreventDefault}>
-            <PrimaryButton
-              className="mt-4 w-100"
-              iconProps={{ iconName: "Refresh" }}
-              onClick={this.sendFile}
-              text="Verzenden als nieuwe versie"
-            />
-            <DefaultButton
-              className="mt-4 w-100"
-              iconProps={{ iconName: "Add" }}
-              onClick={this.handlePromptAsNew}
-              text="Verzenden als nieuw document"
-            />
-          </form>
-        )}
+      {documentIdFromDocument && (
+        <form className="px-4" onSubmit={formPreventDefault}>
+          <PrimaryButton
+            className="mt-4 w-100"
+            iconProps={{ iconName: "Refresh" }}
+            onClick={sendFile}
+            text="Verzenden als nieuwe versie"
+          />
+          <DefaultButton
+            className="mt-4 w-100"
+            iconProps={{ iconName: "Add" }}
+            onClick={handlePromptAsNew}
+            text="Verzenden als nieuw document"
+          />
+        </form>
+      )}
 
-        {this.state.showSelectDocumentType && (
-          <form className="mt-2 px-4" onSubmit={this.formPreventDefault}>
-            <TextField
-              aria-required
-              defaultValue={this.state.documentName}
-              errorMessage={this.state.documentNameErrorMessage}
-              label="Documentnaam"
-              onChange={this.handleDocumentNameChange}
-              required
-              suffix={`.${this.state.documentExtension}`}
-              type="text"
-            />
-            <Dropdown
-              errorMessage={this.state.documentTypeErrorMessage}
-              label="Documenttype"
-              onChange={this.handleDocumentTypeChange}
-              options={this.state.responseDocumentTypes.map((type) => {
-                return {
-                  text: type.moz_doct_naam,
-                  key: type.moz_doct_volgnr,
-                };
-              })}
-              responsiveMode="large"
-            />
-            <PrimaryButton className="mt-4 w-100" onClick={this.sendFile} text="Verzenden" />
-          </form>
-        )}
+      {showSelectDocumentType && (
+        <form className="mt-2 px-4" onSubmit={formPreventDefault}>
+          <TextField
+            aria-required
+            defaultValue={documentName}
+            errorMessage={documentNameErrorMessage}
+            label="Documentnaam"
+            onChange={handleDocumentNameChange}
+            required
+            suffix={`.${documentExtension}`}
+            type="text"
+          />
+          <Dropdown
+            errorMessage={documentTypeErrorMessage}
+            label="Documenttype"
+            onChange={handleDocumentTypeChange}
+            options={responseDocumentTypes.map((type) => {
+              return {
+                text: type.moz_doct_naam,
+                key: type.moz_doct_volgnr,
+              };
+            })}
+            responsiveMode="large"
+          />
+          <PrimaryButton className="mt-4 w-100" onClick={sendFile} text="Verzenden" />
+        </form>
+      )}
 
-        {this.state.progress.percentComplete === 100 && Object.keys(this.state.responseDocumentTypes).length !== 0 && (
-          <div className="px-4">
-            <DefaultButton className="mt-4 w-100" onClick={this.reload} text="Terug naar start" />
-          </div>
-        )}
+      {progress.percentComplete === 100 && Object.keys(responseDocumentTypes).length !== 0 && (
+        <div className="px-4">
+          <DefaultButton className="mt-4 w-100" onClick={reload} text="Terug naar start" />
+        </div>
+      )}
 
-        {this.state.showError && (
-          <div className="error text-p-4 center w-100">
-            <span aria-hidden="true" className="mr-4 ms-fontSize-24 ms-Icon ms-Icon--Error"></span>
-            <span>{this.state.showError}</span>
-          </div>
-        )}
+      {showError && (
+        <div className="error text-p-4 center w-100">
+          <span aria-hidden="true" className="mr-4 ms-fontSize-24 ms-Icon ms-Icon--Error"></span>
+          <span>{showError}</span>
+        </div>
+      )}
 
-        {this.state.showSpinner && (
-          <div className="mt-4 text-center">
-            <Spinner size={SpinnerSize.large} />
-          </div>
-        )}
+      {showSpinner && (
+        <div className="mt-4 text-center">
+          <Spinner size={SpinnerSize.large} />
+        </div>
+      )}
 
-        {this.state.showProgress && this.state.initialized && (
-          <div className="progress text-center w-100">
-            <ProgressIndicator
-              description={this.state.progress.description}
-              label={this.state.progress.label}
-              percentComplete={this.state.progress.percentComplete}
-            />
-          </div>
-        )}
-      </div>
-    );
-  }
+      {showProgress && initialized && (
+        <div className="progress text-center w-100">
+          <ProgressIndicator
+            description={progress.description}
+            label={progress.label}
+            percentComplete={progress.percentComplete}
+          />
+        </div>
+      )}
+    </div>
+  );
 }
+
+export default ViewMain;

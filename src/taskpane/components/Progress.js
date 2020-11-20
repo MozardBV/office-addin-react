@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import * as React from "react";
+import React from "react";
 import { Spinner, SpinnerSize } from "office-ui-fabric-react";
 
-export default class Progress extends React.Component {
-  render() {
-    const { message } = this.props;
+function Progress(props) {
+  const { message } = props;
 
-    return (
-      <section className="ms-u-fadeIn500 ms-welcome__progress mt-8">
-        <Spinner label={message} type={SpinnerSize.large} />
-      </section>
-    );
-  }
+  return (
+    <section className="ms-u-fadeIn500 ms-welcome__progress mt-8">
+      <Spinner label={message} type={SpinnerSize.large} />
+    </section>
+  );
 }
+
+export default Progress;

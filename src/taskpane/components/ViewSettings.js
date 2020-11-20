@@ -14,119 +14,99 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { TooltipHost, DefaultButton, TextField } from "office-ui-fabric-react";
 import { v4 as uuidv4 } from "uuid";
 
 import Header from "./Header";
 
-export default class ViewSettings extends React.Component {
-  constructor() {
-    super();
+function ViewSettings() {
+  const [auth, setAuth] = useState("");
+  const [authErrorMessage, setAuthErrorMessage] = useState("");
+  const [authId] = useState(uuidv4());
+  const [env, setEnv] = useState("");
+  const [envErrorMessage, setEnvErrorMessage] = useState("");
+  const [envId] = useState(uuidv4());
+  const [showSuccess, setShowSuccess] = useState("");
 
-    this.state = {
-      auth: "",
-      authId: uuidv4(),
-      env: "",
-      envId: uuidv4(),
-      authErrorMessage: "",
-      envErrorMessage: "",
-      showSuccess: false,
-    };
-    this.handleAuthChange = this.handleAuthChange.bind(this);
-    this.handleEnvChange = this.handleEnvChange.bind(this);
-    this.saveFnvb = this.saveFnvb.bind(this);
-  }
-
-  handleAuthChange(event) {
-    this.setState({ auth: event.target.value });
-  }
-
-  handleEnvChange(event) {
-    this.setState({ env: event.target.value });
-  }
-
-  saveFnvb() {
-    if (this.state.env.length < 5) {
-      this.setState({ envErrorMessage: "Fout: ongeldige omgeving" });
+  const saveFnvb = () => {
+    if (env.length < 5) {
+      setEnvErrorMessage("Fout: ongeldige omgeving");
     }
-    if (this.state.auth.length < 40) {
-      this.setState({ authErrorMessage: "Fout: ongeldige officecode" });
+    if (auth.length < 40) {
+      setAuthErrorMessage("Fout: ongeldige officecode");
     }
-    if (this.state.env.length === 5 && this.state.auth.length === 40) {
-      this.setState({
-        authErrorMessage: false,
-        envErrorMessage: false,
-        showSuccess: "Je instellingen zijn opgeslagen!",
-      });
+    if (env.length === 5 && auth.length === 40) {
+      setAuthErrorMessage(false);
+      setEnvErrorMessage(false);
+      setShowSuccess("Je instellingen zijn opgeslagen!");
+
       localStorage.setItem(
         "currentFnvb",
         JSON.stringify({
-          auth: this.state.auth,
-          env: this.state.env,
+          auth,
+          env,
         })
       );
     }
-  }
+  };
 
-  componentDidMount() {
+  useEffect(() => {
     if (localStorage.getItem("currentFnvb")) {
-      const currentFnvb = JSON.parse(localStorage.getItem("currentFnvb"));
-      this.setState({
-        auth: currentFnvb.auth,
-        env: currentFnvb.env,
-      });
+      const { auth, env } = JSON.parse(localStorage.getItem("currentFnvb"));
+      setAuth(auth);
+      setEnv(env);
     }
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className="view-settings">
-        <Header />
-        <form className="mt-4 px-4" onSubmit={this.formPreventDefault}>
-          <TooltipHost
-            content="Vul hier de unieke code voor je Mozardomgeving in. Deze kun je opvragen bij je functioneel beheerder."
-            id={this.state.envId}
-          >
-            <TextField
-              aria-describedby={this.state.envId}
-              aria-required
-              errorMessage={this.state.envErrorMessage}
-              label="Omgeving"
-              maxLength="5"
-              onChange={this.handleEnvChange}
-              placeholder="Bijv.: mzrdp"
-              required
-              type="text"
-              value={this.state.env}
-            />
-          </TooltipHost>
-          <TooltipHost
-            content="Vul hier jouw persoonlijke Officecode in. Deze kun je vinden in Mozard, bij je profielopties."
-            id={this.state.authId}
-          >
-            <TextField
-              aria-describedby={this.state.authId}
-              aria-required
-              errorMessage={this.state.authErrorMessage}
-              label="Officecode"
-              maxLength="40"
-              onChange={this.handleAuthChange}
-              placeholder="Bijv.: quin1the1yahrieT1phi2Sai0jaicohxiaJieyae"
-              required
-              type="password"
-              value={this.state.auth}
-            />
-          </TooltipHost>
-          <DefaultButton className="mt-4 w-100" onClick={this.saveFnvb} primary text="Opslaan" />
-        </form>
-        {this.state.showSuccess && (
-          <div className="success text-p-4 center w-100">
-            <span aria-hidden="true" className="mr-4 ms-fontSize-24 ms-Icon ms-Icon--Accept"></span>
-            <span>{this.state.showSuccess}</span>
-          </div>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="view-settings">
+      <Header />
+      <form className="mt-4 px-4">
+        <TooltipHost
+          content="Vul hier de unieke code voor je Mozardomgeving in. Deze kun je opvragen bij je functioneel beheerder."
+          id={envId}
+        >
+          <TextField
+            aria-describedby={envId}
+            aria-required
+            errorMessage={envErrorMessage}
+            label="Omgeving"
+            maxLength="5"
+            onChange={setEnv(event.target.value)}
+            placeholder="Bijv.: mzrdp"
+            required
+            type="text"
+            value={env}
+          />
+        </TooltipHost>
+        <TooltipHost
+          content="Vul hier jouw persoonlijke Officecode in. Deze kun je vinden in Mozard, bij je profielopties."
+          id={authId}
+        >
+          <TextField
+            aria-describedby={authId}
+            aria-required
+            errorMessage={authErrorMessage}
+            label="Officecode"
+            maxLength="40"
+            onChange={setAuth(event.target.value)}
+            placeholder="Bijv.: quin1the1yahrieT1phi2Sai0jaicohxiaJieyae"
+            required
+            type="password"
+            value={auth}
+          />
+        </TooltipHost>
+        <DefaultButton className="mt-4 w-100" onClick={saveFnvb} primary text="Opslaan" />
+      </form>
+      {showSuccess && (
+        <div className="success text-p-4 center w-100">
+          <span aria-hidden="true" className="mr-4 ms-fontSize-24 ms-Icon ms-Icon--Accept"></span>
+          <span>{showSuccess}</span>
+        </div>
+      )}
+    </div>
+  );
 }
+
+export default ViewSettings;

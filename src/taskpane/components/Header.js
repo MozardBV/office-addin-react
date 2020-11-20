@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import * as React from "react";
+import React from "react";
 import Logo from "./Logo";
 
-export default class Header extends React.Component {
-  render() {
-    return (
-      <header className="ms-bgColor-neutralLighter ms-u-fadeIn500 ms-welcome__header">
-        <Logo />
-        <h1 className="ms-fontColor-neutralPrimary ms-fontSize-su ms-fontWeight-light">Officeintegratie</h1>
-      </header>
-    );
-  }
+function Header() {
+  return (
+    <header className="ms-bgColor-neutralLighter ms-u-fadeIn500 ms-welcome__header">
+      <Logo />
+      <h1 className="ms-fontColor-neutralPrimary ms-fontSize-su ms-fontWeight-light">Officeintegratie</h1>
+    </header>
+  );
 }
+
+export default Header;

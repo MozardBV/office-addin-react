@@ -14,40 +14,40 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import * as React from "react";
+import React from "react";
 import { CommandBar } from "office-ui-fabric-react";
 
-export default class Nav extends React.Component {
-  render() {
-    const _items = [
-      {
-        href: "https://www.mozard.nl",
-        iconProps: { iconName: "LightningBolt" },
-        key: "fnvb",
-        text: "Powered by Mozard",
-      },
-    ];
+function Nav() {
+  const _items = [
+    {
+      href: "https://www.mozard.nl",
+      iconProps: { iconName: "LightningBolt" },
+      key: "fnvb",
+      text: "Powered by Mozard",
+    },
+  ];
 
-    const _farItems = [
-      {
-        href: "/#/",
-        iconProps: { iconName: "Home" },
-        key: "home",
-      },
-      {
-        href: "/#/settings",
-        iconProps: { iconName: "Settings" },
-        key: "instellingen",
-      },
-    ];
+  const _farItems = [
+    {
+      href: "/#/",
+      iconProps: { iconName: "Home" },
+      key: "home",
+    },
+    {
+      href: "/#/settings",
+      iconProps: { iconName: "Settings" },
+      key: "instellingen",
+    },
+  ];
 
-    return (
-      <CommandBar
-        ariaLabel="Gebruik de pijltjestoetsen links en rechts om te navigeren"
-        className="nav"
-        farItems={_farItems}
-        items={_items}
-      />
-    );
-  }
+  return (
+    <CommandBar
+      ariaLabel="Gebruik de pijltjestoetsen links en rechts om te navigeren"
+      className="nav"
+      farItems={_farItems}
+      items={_items}
+    />
+  );
 }
+
+export default Nav;
