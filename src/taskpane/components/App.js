@@ -16,9 +16,9 @@
 
 import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
+import { Spinner, SpinnerSize } from "office-ui-fabric-react";
 
 import Header from "./Header";
-import Progress from "./Progress";
 import Nav from "./Nav";
 import ViewMain from "./ViewMain";
 import ViewSettings from "./ViewSettings";
@@ -30,7 +30,9 @@ function App(props) {
     return (
       <div>
         <Header />
-        <Progress message="Deze add-in werkt uitsluitend in Microsoft Office." />
+        <section className="ms-u-fadeIn500 ms-welcome__progress mt-8">
+          <Spinner label="Deze add-in werkt uitsluitend in Microsoft Office." type={SpinnerSize.large} />
+        </section>
       </div>
     );
   }
