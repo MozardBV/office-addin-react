@@ -58,22 +58,6 @@ function ViewMain() {
   const [showSelectDocumentType, setShowSelectDocumentType] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
 
-  const handleDocumentIdChange = (event) => {
-    setDocumentId(event.target.value);
-  };
-
-  const handleDocumentNameChange = (event) => {
-    setDocumentName(event.target.value);
-  };
-
-  const handleDocumentTypeChange = (event, option) => {
-    setDocumentType(option.text);
-  };
-
-  const handleDossierIdChange = (event) => {
-    setDossierId(event.target.value);
-  };
-
   const handlePromptAsNew = () => {
     if (!auth || !env) {
       setShowError(
@@ -91,14 +75,6 @@ function ViewMain() {
       percentComplete: 0,
     });
     setShowError(false);
-  };
-
-  const formPreventDefault = (event) => {
-    event.preventDefault();
-  };
-
-  const reload = () => {
-    window.location.reload();
   };
 
   const sendFile = (event) => {
@@ -284,12 +260,12 @@ function ViewMain() {
     <div className="view-main">
       <Header />
       {documentIdFromDocument === false && (
-        <form className="mt-4 px-4" onSubmit={formPreventDefault}>
+        <form className="mt-4 px-4" onSubmit={(event) => event.preventDefault()}>
           <TextField
             aria-required
             errorMessage={dossierIdErrorMessage}
             label="Zaaknummer (nieuw document)"
-            onChange={handleDossierIdChange}
+            onChange={(event) => setDossierId(event.target.value)}
             prefix="z"
             required
             type="number"
@@ -298,7 +274,7 @@ function ViewMain() {
           <PrimaryButton
             className="mt-4 w-100"
             iconProps={{ iconName: "Add" }}
-            onClick={submitNew}
+            onClick={() => submitNew()}
             text="Verzenden als nieuw document"
           />
           {!documentIdFromDocumentPrevious && !dossierIdFromUser && (
@@ -308,7 +284,7 @@ function ViewMain() {
                 aria-required
                 errorMessage={documentIdErrorMessage}
                 label="Documentnummer (nieuwe versie)"
-                onChange={handleDocumentIdChange}
+                onChange={(event) => setDocumentId(event.target.value)}
                 prefix="d"
                 required
                 type="number"
@@ -317,7 +293,7 @@ function ViewMain() {
               <PrimaryButton
                 className="mt-4 w-100"
                 iconProps={{ iconName: "Refresh" }}
-                onClick={sendFile}
+                onClick={() => sendFile()}
                 text="Verzenden als nieuwe versie"
               />
             </div>
@@ -326,30 +302,30 @@ function ViewMain() {
       )}
 
       {documentIdFromDocument && (
-        <form className="px-4" onSubmit={formPreventDefault}>
+        <form className="px-4" onSubmit={(event) => event.preventDefault()}>
           <PrimaryButton
             className="mt-4 w-100"
             iconProps={{ iconName: "Refresh" }}
-            onClick={sendFile}
+            onClick={(event) => sendFile(event)}
             text="Verzenden als nieuwe versie"
           />
           <DefaultButton
             className="mt-4 w-100"
             iconProps={{ iconName: "Add" }}
-            onClick={handlePromptAsNew}
+            onClick={(event) => handlePromptAsNew(event)}
             text="Verzenden als nieuw document"
           />
         </form>
       )}
 
       {showSelectDocumentType && (
-        <form className="mt-2 px-4" onSubmit={formPreventDefault}>
+        <form className="mt-2 px-4" onSubmit={(event) => event.preventDefault()}>
           <TextField
             aria-required
             defaultValue={documentName}
             errorMessage={documentNameErrorMessage}
             label="Documentnaam"
-            onChange={handleDocumentNameChange}
+            onChange={(event) => setDocumentName(event.target.value)}
             required
             suffix={`.${documentExtension}`}
             type="text"
@@ -357,7 +333,7 @@ function ViewMain() {
           <Dropdown
             errorMessage={documentTypeErrorMessage}
             label="Documenttype"
-            onChange={handleDocumentTypeChange}
+            onChange={(event, option) => setDocumentType(option.text)}
             options={responseDocumentTypes.map((type) => {
               return {
                 text: type.moz_doct_naam,
@@ -366,13 +342,13 @@ function ViewMain() {
             })}
             responsiveMode="large"
           />
-          <PrimaryButton className="mt-4 w-100" onClick={sendFile} text="Verzenden" />
+          <PrimaryButton className="mt-4 w-100" onClick={() => sendFile()} text="Verzenden" />
         </form>
       )}
 
       {progress.percentComplete === 100 && Object.keys(responseDocumentTypes).length !== 0 && (
         <div className="px-4">
-          <DefaultButton className="mt-4 w-100" onClick={reload} text="Terug naar start" />
+          <DefaultButton className="mt-4 w-100" onClick={() => window.location.reload()} text="Terug naar start" />
         </div>
       )}
 

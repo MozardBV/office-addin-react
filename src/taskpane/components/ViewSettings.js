@@ -73,7 +73,7 @@ function ViewSettings() {
             errorMessage={envErrorMessage}
             label="Omgeving"
             maxLength="5"
-            onChange={setEnv(event.target.value)}
+            onChange={(event) => setEnv(event.target.value)}
             placeholder="Bijv.: mzrdp"
             required
             type="text"
@@ -90,14 +90,14 @@ function ViewSettings() {
             errorMessage={authErrorMessage}
             label="Officecode"
             maxLength="40"
-            onChange={setAuth(event.target.value)}
+            onChange={(event) => setAuth(event.target.value)}
             placeholder="Bijv.: quin1the1yahrieT1phi2Sai0jaicohxiaJieyae"
             required
             type="password"
             value={auth}
           />
         </TooltipHost>
-        <DefaultButton className="mt-4 w-100" onClick={saveFnvb} primary text="Opslaan" />
+        <DefaultButton className="mt-4 w-100" onClick={() => saveFnvb()} primary text="Opslaan" />
       </form>
       {showSuccess && (
         <div className="success text-p-4 center w-100">
