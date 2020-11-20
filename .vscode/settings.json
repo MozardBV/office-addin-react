@@ -29,7 +29,9 @@
     "**/dist": true
   },
   "files.associations": {
-    ".markdownlintrc": "jsonc"
+    ".markdownlintrc": "jsonc",
+    "**/components/*.js": "javascriptreact",
+    "**/src/taskpane/index.js": "javascriptreact"
   },
 
   // Event triggers
