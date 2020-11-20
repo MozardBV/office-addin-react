@@ -98,7 +98,7 @@
     "office-addin-debugging": "^3.0.39",
     "office-addin-dev-certs": "^1.5.9",
     "office-addin-lint": "^1.0.29",
-    "^office-addin-manifest": "1.5.11",
+    "office-addin-manifest": "^1.5.11",
     "office-addin-prettier-config": "^1.0.12",
     "postcss-loader": "4.1.0",
     "prettier": "^2.2.0",
