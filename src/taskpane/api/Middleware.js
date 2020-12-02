@@ -37,7 +37,7 @@ export default class Middleware {
     });
   }
 
-  static async sendFile(progressCallback, userProperties, documentProperties) {
+  static async sendFile(progressCallback, errorCallback, userProperties, documentProperties) {
     let sliceSize;
     if (userProperties.platform === "iOS") {
       sliceSize = 65536; // 64 KB
@@ -54,6 +54,7 @@ export default class Middleware {
         OfficeDocument.getSlice(file).then((res) => {
           const slice = OfficeDocument.formatSlice(documentProperties, res, boundary);
 
+          progressCallback(parseInt((file.counter / (file.sliceCount - 1)) * 100), "", "Bezig met verzenden");
           axios
             .post(
               `/public/index.php?destdossier=${documentProperties.dossierId}&destdocnummer=${documentProperties.documentId}&destdoctype=${documentProperties.documentType}&destomgeving=${userProperties.env}`,
@@ -64,11 +65,12 @@ export default class Middleware {
                   "Content-Type": `multipart/form-data; boundary="------------------------${boundary}"`,
                   "X-Moz-Slice": Number(file.counter),
                   "X-Moz-Slice-Index": Number(file.sliceCount) - 1,
-                  "X-Moz-SliceHash": btoa(documentProperties.documentId.concat(userProperties.env)),
+                  "X-Moz-SliceHash": btoa(documentProperties.documentId + userProperties.env),
                 },
               }
             )
             .then((res) => {
+              console.log(res);
               file.counter++;
               if (file.counter < file.sliceCount) {
                 // Recursion!
@@ -79,6 +81,7 @@ export default class Middleware {
               }
             })
             .catch((e) => {
+              errorCallback(e);
               console.error(e);
               throw new Error(e);
             });

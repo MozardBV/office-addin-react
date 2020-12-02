@@ -140,31 +140,33 @@ function ViewMain() {
       });
     }
 
-    try {
-      Middleware.sendFile(
-        progressCallback,
-        {
-          auth,
-          env,
-          platform,
-        },
-        {
-          documentExtension,
-          documentId,
-          documentName,
-          documentType,
-          dossierId,
+    Middleware.sendFile(
+      progressCallback,
+      function errorCallback(e) {
+        setProgress({
+          description: "",
+          percentComplete: undefined,
+        });
+        if (e.message === "Request failed with status code 401") {
+          setShowError("Geen privileges");
+        } else {
+          setShowError("Onbekende fout opgetreden");
         }
-      );
-    } catch (e) {
-      console.error(e);
-      setProgress({
-        description: "",
-        percentComplete: undefined,
-      });
-      setShowError(e);
-      setShowProgress(false);
-    }
+        setShowProgress(false);
+      },
+      {
+        auth,
+        env,
+        platform,
+      },
+      {
+        documentExtension,
+        documentId,
+        documentName,
+        documentType,
+        dossierId,
+      }
+    );
   };
 
   const submitNew = () => {
