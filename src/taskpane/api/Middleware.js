@@ -39,7 +39,7 @@ export default class Middleware {
 
   static async sendFile(progressCallback, errorCallback, userProperties, documentProperties) {
     let sliceSize;
-    if (userProperties.platform === "iOS") {
+    if (userProperties.platform === "ios") {
       sliceSize = 65536; // 64 KB
     } else {
       sliceSize = 4194304; // 4 MB
