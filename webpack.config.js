@@ -19,10 +19,11 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
 const webpack = require("webpack");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://officetest.mozard.nl/";
+const urlProd = "https://office.mozard.nl/";
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
@@ -33,6 +34,13 @@ module.exports = async (env, options) => {
       vendor: ["react", "react-dom", "core-js", "office-ui-fabric-react"],
       polyfill: "babel-polyfill",
       taskpane: ["react-hot-loader/patch", "./src/taskpane/index.js"],
+    },
+    output: {
+      filename: "[name].[contenthash].js",
+      path: path.resolve(__dirname, "dist"),
+    },
+    optimization: {
+      runtimeChunk: "single",
     },
     resolve: {
       extensions: [".ts", ".tsx", ".html", ".js"],
@@ -65,10 +73,6 @@ module.exports = async (env, options) => {
       new CopyWebpackPlugin({
         patterns: [
           {
-            to: "taskpane.css",
-            from: "./src/taskpane/taskpane.css",
-          },
-          {
             to: "[name]." + buildType + ".[ext]",
             from: "manifest*.xml",
             transform(content) {
@@ -82,7 +86,7 @@ module.exports = async (env, options) => {
         ],
       }),
       new MiniCssExtractPlugin({
-        filename: "[name].[fullhash].css",
+        filename: "[name].[contenthash].css",
       }),
       new HtmlWebpackPlugin({
         filename: "index.html",
