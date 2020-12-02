@@ -100,6 +100,7 @@
     "office-addin-lint": "^1.0.29",
     "office-addin-manifest": "^1.5.11",
     "office-addin-prettier-config": "^1.0.12",
+    "path": "^0.12.7",
     "postcss-loader": "4.1.0",
     "prettier": "^2.2.1",
     "react-devtools": "^4.10.0",
