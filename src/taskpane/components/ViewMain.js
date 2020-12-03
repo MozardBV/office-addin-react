@@ -101,7 +101,7 @@ function ViewMain() {
     }
 
     if (documentName) {
-      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%"];
+      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/"];
       const invalid = [];
 
       disallowedChars.forEach((char) => {
