@@ -10,8 +10,8 @@
   <DefaultLocale>nl-NL</DefaultLocale>
   <DisplayName DefaultValue="Mozard"/>
   <Description DefaultValue="Integratie tussen het Mozard zaaksysteem en Microsoft Office"/>
-  <IconUrl DefaultValue="https://officetest.mozard.nl/assets/icon32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://officetest.mozard.nl/assets/icon64.png"/>
+  <IconUrl DefaultValue="https://office.mozard.nl/assets/icon32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://office.mozard.nl/assets/icon64.png"/>
   <SupportUrl DefaultValue="https://www.mozard.nl/mozard/!suite09.scherm1089?mWfr=104"/>
   <AppDomains>
     <AppDomain>https://localhost:3000</AppDomain>
