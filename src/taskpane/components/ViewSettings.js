@@ -29,6 +29,16 @@ function ViewSettings() {
   const [envId] = useState(uuidv4());
   const [showSuccess, setShowSuccess] = useState("");
 
+  const deleteFnvb = () => {
+    localStorage.setItem(
+      "currentFnvb",
+      JSON.stringify({
+        auth: "",
+        env: "",
+      })
+    );
+    window.location.reload();
+  };
   const saveFnvb = () => {
     if (env.length < 5) {
       setEnvErrorMessage("Fout: ongeldige omgeving");
@@ -98,6 +108,7 @@ function ViewSettings() {
           />
         </TooltipHost>
         <DefaultButton className="mt-4 w-100" onClick={() => saveFnvb()} primary text="Opslaan" />
+        <DefaultButton className="mt-4 w-100" onClick={() => deleteFnvb()} text="Afmelden" />
       </form>
       {showSuccess && (
         <div className="success text-p-4 center w-100">
