@@ -46,6 +46,8 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
+    "@sentry/react": "^5.29.2",
+    "@sentry/tracing": "^5.29.2",
     "axios": "^0.21.0",
     "core-js": "^3.8.1",
     "es6-promise": "^4.2.8",
