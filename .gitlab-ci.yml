@@ -1,0 +1,48 @@
+---
+include:
+  - template: Code-Quality.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
+
+stages:
+  - lint
+  - test
+  - nightly
+  - publish
+
+image: node:14.15.4
+
+test_manifest:
+  stage: test
+  cache:
+    paths:
+      - node_modules/
+  before_script:
+    - npm install --legacy-peer-deps
+  script:
+    - npm run validate
+    - cat manifest.xml > manifest.outlook.xml
+    - npm run validate
+
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Verify/Accessibility.gitlab-ci.yml
+test_a11y:
+  stage: test
+  image: registry.gitlab.com/gitlab-org/ci-cd/accessibility:5.3.0-gitlab.3
+  before_script:
+    - npm install --legacy-peer-deps
+    - npm install -g http-server
+  script:
+    - npm run build
+    - http-server dist &
+    - while ! nc -z localhost 8080; do sleep 0.1; done
+    - /gitlab-accessibility.sh "http://localhost:8080"
+  allow_failure: true
+  artifacts:
+    when: always
+    expose_as: "Accessibility Reports"
+    paths:
+      - reports
+      - node_modules
+    reports:
+      accessibility: reports/gl-accessibility.json
