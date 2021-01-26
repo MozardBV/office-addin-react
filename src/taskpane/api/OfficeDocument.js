@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/* global Office OfficeExtension Word */
+/* global Office Word */
 
+import OutlookMailbox from "./OutlookMailbox";
 export default class OfficeDocument {
   static getDocumentId() {
-    return new OfficeExtension.Promise((resolve, reject) => {
+    return new Office.Promise((resolve, reject) => {
       if (Office.context.requirements.isSetSupported("WordApi", "1.3")) {
         Word.run(async (context) => {
           const prop = context.document.properties.customProperties.getItemOrNullObject("mzdDocumentId");
@@ -37,7 +38,7 @@ export default class OfficeDocument {
   }
 
   static setDocumentId(documentId) {
-    return new OfficeExtension.Promise((resolve, reject) => {
+    return new Office.Promise((resolve, reject) => {
       if (Office.context.requirements.isSetSupported("WordApi", "1.3")) {
         Word.run(async (context) => {
           context.document.properties.customProperties.add("mzdDocumentId", documentId);
@@ -56,25 +57,35 @@ export default class OfficeDocument {
     });
   }
 
-  static getFile(sliceSize) {
-    return new OfficeExtension.Promise((resolve, reject) => {
-      Office.context.document.getFileAsync("compressed", { sliceSize }, (result) => {
-        // eslint-disable-next-line eqeqeq
-        if (result.status == Office.AsyncResultStatus.Succeeded) {
-          resolve({
-            counter: 0,
-            file: result.value,
-            sliceCount: result.value.sliceCount,
+  static getFile(platform, sliceSize) {
+    return new Office.Promise((resolve, reject) => {
+      if (platform !== "Outlook") {
+        Office.context.document.getFileAsync("compressed", { sliceSize }, (result) => {
+          // eslint-disable-next-line eqeqeq
+          if (result.status == Office.AsyncResultStatus.Succeeded) {
+            resolve({
+              counter: 0,
+              file: result.value,
+              sliceCount: result.value.sliceCount,
+            });
+          } else {
+            reject(result.status);
+          }
+        });
+      } else {
+        OutlookMailbox.getEmail()
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((e) => {
+            reject(e);
           });
-        } else {
-          reject(new Error(result.status));
-        }
-      });
+      }
     });
   }
 
   static getSlice(state) {
-    return new OfficeExtension.Promise((resolve, reject) => {
+    return new Office.Promise((resolve, reject) => {
       state.file.getSliceAsync(state.counter, (result) => {
         // eslint-disable-next-line eqeqeq
         if (result.status == Office.AsyncResultStatus.Succeeded) {
@@ -88,9 +99,14 @@ export default class OfficeDocument {
 
   static formatSlice(documentProperties, slice, boundary) {
     if (slice.data) {
-      // Encode de slice data (dat is een byte array) als base64 string
-      const u8 = new Uint8Array(slice.data);
-      const b64encoded = btoa(String.fromCharCode.apply(null, u8));
+      let b64encoded;
+
+      if (typeof slice.data !== "string") {
+        const u8 = new Uint8Array(slice.data);
+        b64encoded = btoa(String.fromCharCode.apply(null, u8));
+      } else {
+        b64encoded = btoa(slice.data);
+      }
 
       const attachmentContentType = "application/octet-stream";
       const contentDisposition = `Content-Disposition: form-data; name="file"; filename="${documentProperties.documentName}.${documentProperties.documentExtension}"`;

@@ -29,6 +29,7 @@ import Header from "./Header";
 
 import Middleware from "../api/Middleware";
 import OfficeDocument from "../api/OfficeDocument";
+import OutlookMailbox from "../api/OutlookMailbox";
 
 function ViewMain() {
   const [auth, setAuth] = useState("");
@@ -177,6 +178,10 @@ function ViewMain() {
       return;
     }
 
+    if (platform === "Outlook") {
+      setDocumentName(OutlookMailbox.getSubject);
+    }
+
     setDossierIdFromUser(true);
     setShowError(false);
     setShowSpinner(true);
@@ -224,7 +229,7 @@ function ViewMain() {
       };
     };
 
-    setPlatform(getHostInfo().platform);
+    setPlatform(getHostInfo().type);
 
     switch (getHostInfo().type) {
       case "Word":
@@ -236,8 +241,11 @@ function ViewMain() {
       case "Powerpoint":
         setDocumentExtension("pptx");
         break;
+      case "Outlook":
+        setDocumentExtension("eml");
+        break;
       default:
-        setDocumentExtension("");
+        setDocumentExtension("txt");
         break;
     }
 
@@ -262,7 +270,7 @@ function ViewMain() {
     <div className="view-main">
       <Header />
       {documentIdFromDocument === false && (
-        <form className="mt-4 px-4" onSubmit={(event) => event.preventDefault()}>
+        <form className="px-4 mt-4" onSubmit={(event) => event.preventDefault()}>
           <TextField
             aria-required
             errorMessage={dossierIdErrorMessage}
@@ -281,7 +289,7 @@ function ViewMain() {
           />
           {!documentIdFromDocumentPrevious && !dossierIdFromUser && (
             <div>
-              <hr className="mb-4 mt-8" />
+              <hr className="mt-8 mb-4" />
               <TextField
                 aria-required
                 errorMessage={documentIdErrorMessage}
@@ -321,7 +329,7 @@ function ViewMain() {
       )}
 
       {showSelectDocumentType && (
-        <form className="mt-2 px-4" onSubmit={(event) => event.preventDefault()}>
+        <form className="px-4 mt-2" onSubmit={(event) => event.preventDefault()}>
           <TextField
             aria-required
             defaultValue={documentName}
@@ -368,7 +376,7 @@ function ViewMain() {
       )}
 
       {showProgress && initialized && (
-        <div className="progress text-center w-100">
+        <div className="text-center progress w-100">
           <ProgressIndicator
             description={progress.description}
             label={progress.label}
