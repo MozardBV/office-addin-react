@@ -145,6 +145,6 @@ Zie ook de lijst van [contributors](https://gitlab.com/mozardbv/office-addin-rea
 
 [SPDX](https://spdx.org/licenses/) license: `GPL-3.0-or-later`
 
-Copyright (c) 2006-2020 Mozard B.V.
+Copyright (c) 2006-2021 Mozard B.V.
 
 [Leveringsvoorwaarden](https://www.mozard.nl/mozard/!suite86.scherm0325?mPag=204&mLok=1)
