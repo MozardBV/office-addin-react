@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import React from "react";
-import { CommandBar } from "office-ui-fabric-react";
+import { CommandBar } from "@fluentui/react";
 
 function Nav() {
   const _items = [

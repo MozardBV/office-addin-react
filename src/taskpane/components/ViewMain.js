@@ -23,7 +23,7 @@ import {
   Spinner,
   SpinnerSize,
   TextField,
-} from "office-ui-fabric-react";
+} from "@fluentui/react";
 
 import Header from "./Header";
 

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import React, { useEffect, useState } from "react";
-import { TooltipHost, DefaultButton, TextField } from "office-ui-fabric-react";
+import { TooltipHost, DefaultButton, TextField } from "@fluentui/react";
 import { v4 as uuidv4 } from "uuid";
 
 import Header from "./Header";

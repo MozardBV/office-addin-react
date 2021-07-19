@@ -16,7 +16,7 @@
 
 import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
-import { Spinner, SpinnerSize } from "office-ui-fabric-react";
+import { Spinner, SpinnerSize } from "@fluentui/react";
 
 import Header from "./Header";
 import Nav from "./Nav";

@@ -31,7 +31,7 @@ module.exports = async (env, options) => {
   const config = {
     devtool: "source-map",
     entry: {
-      vendor: ["react", "react-dom", "core-js", "office-ui-fabric-react"],
+      vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
       polyfill: "babel-polyfill",
       taskpane: ["react-hot-loader/patch", "./src/taskpane/index.js"],
     },
