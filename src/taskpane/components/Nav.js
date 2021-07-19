@@ -20,10 +20,10 @@ import { CommandBar } from "@fluentui/react";
 function Nav() {
   const _items = [
     {
-      href: "https://www.mozard.nl",
-      iconProps: { iconName: "LightningBolt" },
+      href: "https://www.mozard.nl/mozard/!suite86.scherm0325?mVrg=7781",
+      iconProps: { iconName: "Link12" },
       key: "fnvb",
-      text: "Powered by Mozard",
+      text: "Meer over Mozard",
     },
   ];
 
