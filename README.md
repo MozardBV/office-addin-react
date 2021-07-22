@@ -129,7 +129,7 @@ npm run build
 
 ## Bijdragen
 
-Zie [CONTRIBUTING.md](https://gitlab.com/mozardbv/office-addin-react/-/blob/master/CONTRIBUTING.md) voor de inhoudelijke procesafspraken.
+Zie [CONTRIBUTING.md](https://gitlab.com/mozardbv/office-addin-react/-/blob/main/CONTRIBUTING.md) voor de inhoudelijke procesafspraken.
 
 ## Versioning
 
@@ -139,7 +139,7 @@ Gebruikt [SemVer](https://semver.org/).
 
 - **Patrick Godschalk (Mozard)** - _Ontwikkelaar_ - [pgodschalk](https://gitlab.com/pgodschalk)
 
-Zie ook de lijst van [contributors](https://gitlab.com/mozardbv/office-addin-react/-/graphs/master) die hebben bijgedragen aan dit project.
+Zie ook de lijst van [contributors](https://gitlab.com/mozardbv/office-addin-react/-/graphs/main) die hebben bijgedragen aan dit project.
 
 ## Licentie
 
