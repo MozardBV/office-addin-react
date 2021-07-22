@@ -22,8 +22,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const webpack = require("webpack");
 
-const urlDev = "https://localhost:3000/";
-const urlProd = "https://office.mozard.nl/";
+const urlDev = "https://localhost:3000";
+const urlProd = "https://office.mozard.nl";
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
@@ -73,7 +73,7 @@ module.exports = async (env, options) => {
       new CopyWebpackPlugin({
         patterns: [
           {
-            to: "[name]." + buildType + ".[ext]",
+            to: "[name]." + buildType + "[ext]",
             from: "manifest*.xml",
             transform(content) {
               if (dev) {
@@ -82,6 +82,10 @@ module.exports = async (env, options) => {
                 return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
               }
             },
+          },
+          {
+            to: "assets",
+            from: "assets",
           },
         ],
       }),
