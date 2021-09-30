@@ -1,20 +1,10 @@
 ---
 include:
-  - template: Code-Quality.gitlab-ci.yml
-  - template: Security/Secret-Detection.gitlab-ci.yml
-  - template: Security/SAST.gitlab-ci.yml
-  - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
-
-stages:
-  - lint
-  - test
-  - nightly
-  - publish
-
-image: node:14.15.4
+  - template: Auto-DevOps.gitlab-ci.yml
 
 test_manifest:
   stage: test
+  image: node:14
   cache:
     paths:
       - node_modules/
@@ -22,27 +12,18 @@ test_manifest:
     - npm install --legacy-peer-deps
   script:
     - npm run validate
-    - cat manifest.xml > manifest.outlook.xml
+    - cat manifest.outlook.xml > manifest.xml
     - npm run validate
 
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Verify/Accessibility.gitlab-ci.yml
-test_a11y:
-  stage: test
-  image: registry.gitlab.com/gitlab-org/ci-cd/accessibility:5.3.0-gitlab.3
+production:
+  image: python:3
+  stage: production
   before_script:
-    - npm install --legacy-peer-deps
-    - npm install -g http-server
+    - pip install awscli
   script:
-    - npm run build
-    - http-server dist &
-    - while ! nc -z localhost 8080; do sleep 0.1; done
-    - /gitlab-accessibility.sh "http://localhost:8080"
-  allow_failure: true
-  artifacts:
-    when: always
-    expose_as: "Accessibility Reports"
-    paths:
-      - reports
-      - node_modules
-    reports:
-      accessibility: reports/gl-accessibility.json
+    - aws s3 cp ./dist s3://$S3_BUCKET_NAME_PROD/ --recursive
+  environment:
+    name: production
+    url: https://office.mozard.nl
+  only:
+    - main
