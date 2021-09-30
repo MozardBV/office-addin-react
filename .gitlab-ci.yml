@@ -25,5 +25,3 @@ production:
   environment:
     name: production
     url: https://office.mozard.nl
-  only:
-    - main
