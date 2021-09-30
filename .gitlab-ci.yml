@@ -16,7 +16,7 @@ test_manifest:
     - npm run validate
 
 production:
-  image: python:3
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: production
   before_script:
     - pip install awscli
