@@ -9,6 +9,7 @@ build:
     paths:
       - node_modules
   before_script:
+    - apt-get update && apt-get install -y sudo && rm -rf /var/apt/lists/*
     - npm ci --legacy-peer-deps
   script:
     - npm run build
