@@ -1,0 +1,16 @@
+---
+version: "3"
+networks:
+  office_addin_react_net:
+    driver: bridge
+services:
+  office_addin_react_app:
+    build: .
+    networks:
+      - office_addin_react_net
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/code
+      - ~/.office-addin-dev-certs:/home/node/.office-addin-dev-certs
+    restart: on-failure:5
