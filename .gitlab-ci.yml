@@ -18,8 +18,6 @@ test_manifest:
 deploy_production:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
-  before_script:
-    - pip install awscli
   script:
     - aws s3 cp ./dist s3://$S3_BUCKET_NAME_PROD/ --recursive
   environment:
