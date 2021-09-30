@@ -15,9 +15,9 @@ test_manifest:
     - cat manifest.outlook.xml > manifest.xml
     - npm run validate
 
-production:
+deploy_production:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  stage: production
+  stage: deploy
   before_script:
     - pip install awscli
   script:
