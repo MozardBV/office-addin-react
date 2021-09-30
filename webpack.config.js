@@ -105,6 +105,9 @@ module.exports = async (env, options) => {
       }),
     ],
     devServer: {
+      devMiddleware: {
+        publicPath: "/",
+      },
       hot: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -122,7 +125,6 @@ module.exports = async (env, options) => {
           },
         },
       },
-      publicPath: "/",
     },
   };
 
