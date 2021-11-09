@@ -50,6 +50,7 @@ const render = (Component) => {
 };
 
 /* Render application after Office initializes */
+// eslint-disable-next-line office-addins/no-office-initialize
 Office.initialize = () => {
   isOfficeInitialized = true;
   render(App);
