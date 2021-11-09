@@ -28,8 +28,6 @@ module.exports = {
     "plugin:office-addins/recommended",
     "plugin:office-addins/react",
     "prettier",
-    "prettier/react",
-    "prettier/standard",
   ],
   plugins: ["react", "import", "jsx-a11y", "react-hooks", "@typescript-eslint", "office-addins"],
   parserOptions: {
