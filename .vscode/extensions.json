@@ -34,8 +34,7 @@
     // https://github.com/stylelint/vscode-stylelint
     "stylelint.vscode-stylelint",
 
-    // Debuggers
-    "msjsdiag.debugger-for-chrome",
+    // Debugger
     "msjsdiag.debugger-for-edge"
   ]
 }
