@@ -32,9 +32,6 @@
 
     // Lint-on-save met Stylelint
     // https://github.com/stylelint/vscode-stylelint
-    "stylelint.vscode-stylelint",
-
-    // Debugger
-    "msjsdiag.debugger-for-edge"
+    "stylelint.vscode-stylelint"
   ]
 }
