@@ -9,7 +9,7 @@
     <%= mode === 'development' ? '<!-- Template styles -->' : '' %>
     <%= mode === 'development' ? '<script type="text/javascript" src="https://localhost:8097"></script>' : '' %>
     <%= mode === 'development' ? '<!-- Office JavaScript API -->' : '' %>
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
     <meta name="application-name" content="Mozard+Office">
     <meta name="theme-color" content="#faca17">
     <meta name="description" content="Integratie tussen het Mozard zaaksysteem en Microsoft Office">
@@ -37,5 +37,18 @@
   </head>
   <body class="ms-Fabric ms-font-m">
     <div id="container"></div>
+    <script type="text/javascript">
+      window._historyCache = {
+        replaceState: window.history.replaceState,
+        pushState: window.history.pushState
+      };
+    </script>
+
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <script type="text/javascript">
+      window.history.replaceState = window._historyCache.replaceState;
+      window.history.pushState = window._historyCache.pushState;
+    </script>
   </body>
 </html>
