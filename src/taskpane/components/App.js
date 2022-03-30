@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import React from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Spinner, SpinnerSize } from "@fluentui/react";
 
 import Header from "./Header";
@@ -41,8 +41,10 @@ function App(props) {
     return (
       <div id="app">
         <Router>
-          <Route exact path="/" component={ViewMain} />
-          <Route exact path="/settings" component={ViewSettings} />
+          <Routes>
+            <Route exact path="/" element={<ViewMain />} />
+            <Route exact path="/settings" element={<ViewSettings />} />
+          </Routes>
         </Router>
         <Nav />
       </div>
