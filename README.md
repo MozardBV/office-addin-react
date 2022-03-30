@@ -42,7 +42,7 @@ Zie ook: [Office add-in documentation](https://docs.microsoft.com/office/dev/add
 Clone dit git repository:
 
 ```sh
-git clone git@gitlab.com:MozardBV/mozard-css.git
+git clone git@gitlab.com:MozardBV/office-addin-react.git
 ```
 
 Haal lokale node modules binnen. Let op, dit werkt niet met `yarn`, aangezien deze niet goed omgaat met CRLF line endings. Zie [GitHub Issue](https://github.com/OfficeDev/Office-Addin-Scripts/issues/168)
