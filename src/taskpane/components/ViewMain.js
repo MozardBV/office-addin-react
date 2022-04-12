@@ -102,8 +102,14 @@ function ViewMain() {
     }
 
     if (documentName) {
+      const maximumLength = 80;
       const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/"];
       const invalid = [];
+      const errorMsg = [];
+
+      if (documentName.length > maximumLength) {
+        errorMsg.push(`titel mag maximaal ${maximumLength} tekens groot zijn`);
+      }
 
       disallowedChars.forEach((char) => {
         if (documentName.includes(char)) {
@@ -112,9 +118,11 @@ function ViewMain() {
       });
 
       if (invalid.length > 0) {
-        console.log(invalid);
-        setDocumentNameErrorMessage(`Fout: ongeldige tekens in documentnaam (${invalid.join(", ")})`);
-        return;
+        errorMsg.push(`ongeldige tekens in documentnaam (${invalid.join(", ")})`);
+      }
+
+      if (errorMsg.length > 0) {
+        setDocumentNameErrorMessage(`Fout: ${errorMsg.join(" én ")}`);
       }
     }
 
