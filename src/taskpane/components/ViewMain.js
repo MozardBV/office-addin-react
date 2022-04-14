@@ -31,6 +31,8 @@ import Middleware from "../api/Middleware";
 import OfficeDocument from "../api/OfficeDocument";
 import OutlookMailbox from "../api/OutlookMailbox";
 
+// 663643
+
 function ViewMain() {
   const [auth, setAuth] = useState("");
   const [env, setEnv] = useState("");
@@ -201,14 +203,15 @@ function ViewMain() {
     } else {
       const today = getToday();
       let docTitle = `${today}-`;
-      OfficeDocument.getDocumentTitle()
+      console.log(docTitle);
+      OfficeDocument.getDocumentTitle(platform)
         .then((res) => {
           docTitle += res;
+          setDocumentName(docTitle);
         })
         .catch((e) => {
           console.log(e);
         });
-      setDocumentName(docTitle);
     }
 
     setDossierIdFromUser(true);

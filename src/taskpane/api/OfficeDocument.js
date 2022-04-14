@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/* global Office Word */
+/* global Office Word Excel */
 
 import OutlookMailbox from "./OutlookMailbox";
 export default class OfficeDocument {
@@ -39,44 +39,89 @@ export default class OfficeDocument {
     });
   }
 
-  static getDocumentTitle() {
+  static getDocumentTitle(platform) {
+    const removeDisallowedChars = (textArr) => {
+      let res;
+      for (let i = 0; i < textArr.length; i++) {
+        const t = textArr[i];
+        const textLength = t.length;
+        const maxLength = 80;
+        const prefixLength = "YYYY_MM_DD-".length;
+        const max = maxLength - prefixLength;
+        const end = textLength < max ? textLength : max;
+        const firstChars = t.substring(0, end);
+        const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
+        const regex = new RegExp(`[${disallowedChars.join("")}]`, "g");
+        const tText = firstChars.replace(regex, "");
+        if (tText) {
+          res = tText;
+          break;
+        }
+      }
+      return res;
+    };
+
     return new Office.Promise((resolve, reject) => {
-      if (Office.context.requirements.isSetSupported("WordApi", "1.3")) {
-        Word.run(async (context) => {
-          const paragraphs = context.document.body.paragraphs;
-          paragraphs.load("text");
-          await context.sync();
-          const paragraphText = [];
-          paragraphs.items.forEach((item) => {
-            const paragraph = item.text.trim();
-            if (paragraph) paragraphText.push(paragraph);
-          });
-          if (paragraphText.length <= 0) reject("Document bevat geen tekst");
-          let res;
-          for (let i = 0; i < paragraphText.length; i++) {
-            const p = paragraphText[i];
-            const textLength = p.length;
-            const maxLength = 80;
-            const prefixLength = "YYYY_MM_DD-".length;
-            const max = maxLength - prefixLength;
-            const end = textLength < max ? textLength : max;
-            const firstChars = p.substring(0, end);
-            const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
-            const regex = new RegExp(`[${disallowedChars.join("")}]`, "g");
-            const pText = firstChars.replace(regex, "");
-            if (pText) {
-              res = pText;
-              break;
+      const noSupportMsg = `[${platform}] Vereite Office API voor OfficeDocument.getDocumentTitle() niet ondersteund`;
+      if (platform === "Word") {
+        if (Office.context.requirements.isSetSupported("WordApi", "1.3")) {
+          Word.run(async (context) => {
+            const paragraphs = context.document.body.paragraphs;
+            paragraphs.load("text");
+            await context.sync();
+            const paragraphText = [];
+            paragraphs.items.forEach((item) => {
+              const paragraph = item.text.trim();
+              if (paragraph) paragraphText.push(paragraph);
+            });
+            if (paragraphText.length <= 0) reject("Document bevat geen tekst");
+            // !! return ? test met word
+            const res = removeDisallowedChars(paragraphText);
+            if (res) {
+              resolve(res);
+            } else {
+              reject("Document bevat geen bruikbare karakters om te gebruiken als titel");
             }
-          }
-          if (res) {
-            resolve(res);
-          } else {
-            reject("Document bevat geen bruikbare karakters om te gebruiken als titel");
-          }
-        });
+          });
+        } else {
+          reject(noSupportMsg);
+        }
+      } else if (platform === "Excel") {
+        if (Office.context.requirements.isSetSupported("ExcelApi", "1.5")) {
+          Excel.run(async (context) => {
+            const sheets = context.workbook.worksheets;
+            const firstSheet = sheets.getFirst(true);
+            const valueRange = firstSheet.getUsedRangeOrNullObject(true);
+            valueRange.load("text");
+            await context.sync();
+            // Office laad automatisch "isNullObject" foo.load('isNullObject') is dus niet nodig
+            // eslint-disable-next-line office-addins/load-object-before-read
+            if (valueRange.isNullObject) {
+              reject("Document bevat geen waardes");
+              return;
+            }
+            const sheetText = valueRange.text;
+            const allText = [];
+            sheetText.forEach((row) => {
+              row.forEach((cell) => {
+                const val = cell.trim();
+                if (val) allText.push(val);
+              });
+            });
+            const res = removeDisallowedChars(allText);
+            if (res) {
+              resolve(res);
+            } else {
+              reject("Document bevat geen bruikbare karakters om te gebruiken als titel");
+            }
+          });
+        } else {
+          reject(noSupportMsg);
+        }
+      } else if (platform === "Powerpoint") {
+        console.log("Platform is Powerpoint");
       } else {
-        reject("Vereiste Office API voor OfficeDocument.getDocumentTitle() niet ondersteund");
+        reject(`Platform ${platform} wordt niet ondersteund`);
       }
     });
   }
