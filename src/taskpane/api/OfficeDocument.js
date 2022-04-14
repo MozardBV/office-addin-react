@@ -25,6 +25,8 @@ export default class OfficeDocument {
           const prop = context.document.properties.customProperties.getItemOrNullObject("mzdDocumentId");
           context.load(prop);
           await context.sync();
+          // Office laad automatisch "isNullObject" foo.load('isNullObject') is dus niet nodig
+          // eslint-disable-next-line office-addins/load-object-before-read
           if (!prop.isNullObject) {
             resolve(prop);
           } else {
@@ -33,6 +35,48 @@ export default class OfficeDocument {
         });
       } else {
         reject("Vereiste Office API voor OfficeDocument.getDocumentId() niet ondersteund");
+      }
+    });
+  }
+
+  static getDocumentTitle() {
+    return new Office.Promise((resolve, reject) => {
+      if (Office.context.requirements.isSetSupported("WordApi", "1.3")) {
+        Word.run(async (context) => {
+          const paragraphs = context.document.body.paragraphs;
+          paragraphs.load("text");
+          await context.sync();
+          const paragraphText = [];
+          paragraphs.items.forEach((item) => {
+            const paragraph = item.text.trim();
+            if (paragraph) paragraphText.push(paragraph);
+          });
+          if (paragraphText.length <= 0) reject("Document bevat geen tekst");
+          let res;
+          for (let i = 0; i < paragraphText.length; i++) {
+            const p = paragraphText[i];
+            const textLength = p.length;
+            const maxLength = 80;
+            const prefixLength = "YYYY_MM_DD-".length;
+            const max = maxLength - prefixLength;
+            const end = textLength < max ? textLength : max;
+            const firstChars = p.substring(0, end);
+            const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
+            const regex = new RegExp(`[${disallowedChars.join("")}]`, "g");
+            const pText = firstChars.replace(regex, "");
+            if (pText) {
+              res = pText;
+              break;
+            }
+          }
+          if (res) {
+            resolve(res);
+          } else {
+            reject("Document bevat geen bruikbare karakters om te gebruiken als titel");
+          }
+        });
+      } else {
+        reject("Vereiste Office API voor OfficeDocument.getDocumentTitle() niet ondersteund");
       }
     });
   }

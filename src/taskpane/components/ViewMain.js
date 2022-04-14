@@ -103,7 +103,7 @@ function ViewMain() {
 
     if (documentName) {
       const maximumLength = 80;
-      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/"];
+      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
       const invalid = [];
       const errorMsg = [];
 
@@ -123,6 +123,7 @@ function ViewMain() {
 
       if (errorMsg.length > 0) {
         setDocumentNameErrorMessage(`Fout: ${errorMsg.join(" én ")}`);
+        return;
       }
     }
 
@@ -177,7 +178,16 @@ function ViewMain() {
       }
     );
   };
-
+  const formatNum = (num) => (num < 10 ? `0${num}` : num);
+  const getToday = () => {
+    const today = new Date();
+    const date = {
+      year: today.getFullYear(),
+      month: formatNum(today.getMonth() + 1),
+      day: formatNum(today.getDate()),
+    };
+    return Object.values(date).join("_");
+  };
   const submitNew = () => {
     setDossierIdErrorMessage("");
 
@@ -188,6 +198,17 @@ function ViewMain() {
 
     if (platform === "Outlook") {
       setDocumentName(OutlookMailbox.getSubject);
+    } else {
+      const today = getToday();
+      let docTitle = `${today}-`;
+      OfficeDocument.getDocumentTitle()
+        .then((res) => {
+          docTitle += res;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      setDocumentName(docTitle);
     }
 
     setDossierIdFromUser(true);
