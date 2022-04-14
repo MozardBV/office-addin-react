@@ -77,6 +77,7 @@ Je kan op meerdere manieren lokaal ontwikkelen:
 
 - [Met de browser developer tools](https://docs.microsoft.com/office/dev/add-ins/testing/debug-add-ins-in-office-online)
 - [Met een debugger in de task pane](https://docs.microsoft.com/office/dev/add-ins/testing/attach-debugger-from-task-pane)
+  - [Inspector aanzetten](https://docs.microsoft.com/en-us/office/dev/add-ins/testing/debug-office-add-ins-on-ipad-and-mac)
 - [Met de F12 Developer Tools op Windows 10](https://docs.microsoft.com/office/dev/add-ins/testing/debug-add-ins-using-f12-developer-tools-on-windows-10)
 
 Omdat HTTPS een vereiste is, worden de React DevTools niet automatisch gestart. Dit moet je handmatig doen, en daarbij een bestaand x.509 keypair opgeven. Bijvoorbeeld:
