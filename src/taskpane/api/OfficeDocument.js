@@ -74,8 +74,10 @@ export default class OfficeDocument {
               const paragraph = item.text.trim();
               if (paragraph) paragraphText.push(paragraph);
             });
-            if (paragraphText.length <= 0) reject("Document bevat geen tekst");
-            // !! return ? test met word
+            if (paragraphText.length <= 0) {
+              reject("Document bevat geen tekst");
+              return;
+            }
             const res = removeDisallowedChars(paragraphText);
             if (res) {
               resolve(res);
@@ -118,8 +120,6 @@ export default class OfficeDocument {
         } else {
           reject(noSupportMsg);
         }
-      } else if (platform === "Powerpoint") {
-        console.log("Platform is Powerpoint");
       } else {
         reject(`Platform ${platform} wordt niet ondersteund`);
       }
