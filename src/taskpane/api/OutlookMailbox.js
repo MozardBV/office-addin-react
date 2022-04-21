@@ -24,21 +24,19 @@ export default class OutlookMailbox {
   static getEmail() {
     return new Office.Promise((resolve, reject) => {
       const boundary = Date.now().toString();
-
       Office.context.mailbox.item.getAllInternetHeadersAsync((headers) => {
+        // Geeft soms 5001 internal error op Mac OS
+        // Zie: https://github.com/OfficeDev/office-js/issues/2386
+
         // Content-Type eraf halen, en er zelf eentje zetten.
         const arr = headers.value.split("\n");
         const indexContentType = arr.findIndex((el) => el.toLowerCase().startsWith("content-type"));
         const indexNextHeader = arr.findIndex((el, idx) => idx > indexContentType && el.includes(":"));
-
         const arr1 = arr.slice(0, indexContentType);
         const arr2 = arr.slice(indexNextHeader);
-
         headers = arr1.concat(arr2).join("\n");
-
         headers += `Content-type: multipart/alternative; boundary="${boundary}"\r\n`;
         headers += "\r\n";
-
         Promise.all([this.getEmailAsText(boundary), this.getEmailAsHTML(boundary)])
           .then((res) => {
             let body = res.join("");
