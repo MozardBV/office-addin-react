@@ -652,3 +652,7 @@ hr::before {
     color: hsl(355, 77%, 59%);
   }
 }
+
+.messagebar-dossiername {
+  padding-top: 1rem;
+}
