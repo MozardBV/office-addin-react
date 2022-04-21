@@ -9,7 +9,18 @@
     <%= mode === 'development' ? '<!-- Template styles -->' : '' %>
     <%= mode === 'development' ? '<script type="text/javascript" src="https://localhost:8097"></script>' : '' %>
     <%= mode === 'development' ? '<!-- Office JavaScript API -->' : '' %>
+    <script type="text/javascript">
+      window._historyCache = {
+        replaceState: window.history.replaceState,
+        pushState: window.history.pushState
+      };
+    </script>
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Restore them
+      window.history.replaceState = window._historyCache.replaceState;
+      window.history.pushState = window._historyCache.pushState;
+    </script>
     <meta name="application-name" content="Mozard+Office">
     <meta name="theme-color" content="#faca17">
     <meta name="description" content="Integratie tussen het Mozard zaaksysteem en Microsoft Office">
