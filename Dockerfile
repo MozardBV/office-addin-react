@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:16-bullseye
 
 LABEL Maintainer="Patrick Godschalk <p.godschalk@ienpm.nl>"
 LABEL Description "Integratie tussen het Mozard zaaksysteem en Microsoft Office"
