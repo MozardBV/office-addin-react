@@ -105,7 +105,7 @@ function ViewMain() {
 
     if (documentName) {
       const maximumLength = 80;
-      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
+      const disallowedChars = [":", "\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
       const invalid = [];
       const errorMsg = [];
 

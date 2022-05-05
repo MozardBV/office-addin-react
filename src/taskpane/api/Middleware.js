@@ -71,7 +71,7 @@ export default class Middleware {
                 // Recursion!
                 // Outlook komt hier nooit, omdat die altijd maar 1 slice heeft.
                 // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                // sendSlice();
+                sendSlice();
               } else {
                 if (userProperties.platform !== "Outlook") OfficeDocument.closeFile(file);
                 progressCallback(100, "", "Bestand verzonden!");

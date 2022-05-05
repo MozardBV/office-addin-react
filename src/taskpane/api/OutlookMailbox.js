@@ -20,12 +20,20 @@ import { fileTypeFromBuffer } from "file-type";
 
 export default class OutlookMailbox {
   static getSubject() {
-    // Filter disallowed characters
-    return Office.context.mailbox.item.subject;
+    const disallowedChars = [":", "\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
+    const subject = Office.context.mailbox.item.subject;
+    const regex = new RegExp(`[${disallowedChars.join("")}]`, "g");
+    const cleanSubject = subject.replace(regex, "");
+    return cleanSubject;
   }
 
-  static getAttachments(attachments) {
+  static getAttachments() {
     return new Office.Promise((resolve, reject) => {
+      const attachments = Office.context.mailbox.item.attachments;
+      if (attachments.length === 0) {
+        reject("Geen bijlages");
+        return;
+      }
       const getAttachmentAsync = async (attachment) => {
         const { id, name, size } = attachment;
         return this.getAttachment(id, name, size);
@@ -63,7 +71,6 @@ export default class OutlookMailbox {
             );
             return;
           }
-
           // Content-Type eraf halen, en er zelf eentje zetten.
           const arr = headers.value.split("\n");
           const indexContentType = arr.findIndex((el) => el.toLowerCase().startsWith("content-type"));
@@ -73,16 +80,12 @@ export default class OutlookMailbox {
           headers = arr1.concat(arr2).join("\n");
           headers += `Content-type: multipart/alternative; boundary="${boundary}"\r\n`;
           headers += "\r\n";
-
-          const attachments = Office.context.mailbox.item.attachments;
-          const hasAttachments = attachments.length > 0;
-          const attachmentContents = hasAttachments ? await this.getAttachments() : undefined;
-
+          const attachmentContents = await this.getAttachments();
           Promise.all([this.getEmailAsText(boundary), this.getEmailAsHTML(boundary)])
             .then((res) => {
               const mainBody = res.join("");
               let eml = headers.concat(mainBody);
-              if (hasAttachments) {
+              if (Office.context.mailbox.item.attachments.length > 0) {
                 const attachmentsArr = attachmentContents.map((attachment) => {
                   const { headers, body } = attachment;
                   let attachmentHeaders = `--${boundary}\r\n`;
