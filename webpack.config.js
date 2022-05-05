@@ -43,6 +43,9 @@ module.exports = async (env, options) => {
       runtimeChunk: "single",
     },
     resolve: {
+      fallback: {
+        buffer: require.resolve("buffer/"),
+      },
       extensions: [".ts", ".tsx", ".html", ".js"],
       alias: {
         "react-dom": "@hot-loader/react-dom",
@@ -101,7 +104,21 @@ module.exports = async (env, options) => {
         chunks: ["taskpane", "vendor", "polyfill"],
       }),
       new webpack.ProvidePlugin({
+        Buffer: ["buffer", "Buffer"],
         Promise: ["es6-promise", "Promise"],
+      }),
+      new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
+        const mod = resource.request.replace(/^node:/, "");
+        switch (mod) {
+          case "buffer":
+            resource.request = "buffer";
+            break;
+          case "stream":
+            resource.request = "readable-stream";
+            break;
+          default:
+            throw new Error(`Not found ${mod}`);
+        }
       }),
     ],
     devServer: {
