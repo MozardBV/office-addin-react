@@ -73,6 +73,14 @@ Om te stoppen:
 npm run stop
 ```
 
+Let op dat bij Windows op dat de current directory path exact hetzelfde is qua hoofdletters als het path van de modules. Anders geeft webpack een foutmelding. Bijvoorbeeld:
+
+```zsh
+C:\Users\user\Documents\office-addin-react\
+# in plaats van
+C:\users\user\documents\office-addin-react\
+```
+
 Je kan op meerdere manieren lokaal ontwikkelen:
 
 - [Met de browser developer tools](https://docs.microsoft.com/office/dev/add-ins/testing/debug-add-ins-in-office-online)
