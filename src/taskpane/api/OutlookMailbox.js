@@ -51,9 +51,18 @@ export default class OutlookMailbox {
       if (Office.context.requirements.isSetSupported("Mailbox", "1.8")) {
         const boundary = Date.now().toString();
         Office.context.mailbox.item.getAllInternetHeadersAsync(async (headers) => {
-          // TODO toon foutmelding
-          // Geeft soms 5001 internal error op Mac OS
+          // .getAllInternetHeadersAsync geeft soms een 5001 error op Mac OS of succeeded zonder headers
           // Zie: https://github.com/OfficeDev/office-js/issues/2386
+          if (headers.status === "failed" || !headers.value) {
+            reject(
+              headers.error || {
+                name: "OfficeAPI interne fout",
+                message: "Er is een interne fout opgetreden bij de OfficeAPI",
+                code: 5001,
+              }
+            );
+            return;
+          }
 
           // Content-Type eraf halen, en er zelf eentje zetten.
           const arr = headers.value.split("\n");
@@ -85,8 +94,6 @@ export default class OutlookMailbox {
                 eml = eml.concat("\r\n", allAttachments);
               }
               eml = eml.concat(`\r\n\r\n--${boundary}--`);
-
-              console.log(eml);
               resolve({
                 counter: 0,
                 file: eml,

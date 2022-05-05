@@ -159,7 +159,9 @@ function ViewMain() {
           description: "",
           percentComplete: undefined,
         });
-        if (e.message === "Request failed with status code 500") {
+        if (e.code === 5001) {
+          setShowError("Fout: Vanwege een fout bij Office is het niet mogelijk om een document te versturen");
+        } else if (e.message === "Request failed with status code 500") {
           setShowError("Fout: Onbekend documentnummer");
         } else if (e.message === "Request failed with status code 401") {
           setShowError("Fout: Geen rechten voor dit document");
