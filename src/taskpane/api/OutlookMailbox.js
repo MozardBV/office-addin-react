@@ -27,33 +27,6 @@ export default class OutlookMailbox {
     return cleanSubject;
   }
 
-  static getAttachments() {
-    return new Office.Promise((resolve, reject) => {
-      const attachments = Office.context.mailbox.item.attachments;
-      if (attachments.length === 0) {
-        reject("Geen bijlages");
-        return;
-      }
-      const getAttachmentAsync = async (attachment) => {
-        const { id, name, size } = attachment;
-        return this.getAttachment(id, name, size);
-      };
-
-      const getAllAttachments = async () => {
-        return Promise.all(attachments.map((attachment) => getAttachmentAsync(attachment)));
-      };
-
-      getAllAttachments()
-        .then((result) => {
-          const filtered = result.filter(Boolean);
-          resolve(filtered);
-        })
-        .catch((e) => {
-          reject(e);
-        });
-    });
-  }
-
   static getEmail() {
     return new Office.Promise((resolve, reject) => {
       if (Office.context.requirements.isSetSupported("Mailbox", "1.8")) {
@@ -114,6 +87,32 @@ export default class OutlookMailbox {
   }
 
   /** In principe "private" members */
+  static getAttachments() {
+    return new Office.Promise((resolve, reject) => {
+      const attachments = Office.context.mailbox.item.attachments;
+      if (attachments.length === 0) {
+        reject("Geen bijlages");
+        return;
+      }
+      const getAttachmentAsync = async (attachment) => {
+        const { id, name, size } = attachment;
+        return this.getAttachment(id, name, size);
+      };
+
+      const getAllAttachments = async () => {
+        return Promise.all(attachments.map((attachment) => getAttachmentAsync(attachment)));
+      };
+
+      getAllAttachments()
+        .then((result) => {
+          const filtered = result.filter(Boolean);
+          resolve(filtered);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  }
 
   static getAttachment(id, name, size) {
     return new Office.Promise((resolve, reject) => {
