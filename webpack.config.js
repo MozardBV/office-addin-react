@@ -118,10 +118,10 @@ module.exports = async (env, options) => {
       port: process.env.npm_package_config_dev_server_port || 3000,
       proxy: {
         "/public": {
-          target: "https://office.mozard.nl",
+          target: "https://mozardbv-office-middleware.eks.mozardsaas.nl",
           secure: true,
           headers: {
-            Host: "office.mozard.nl",
+            Host: "mozardbv-office-middleware.eks.mozardsaas.nl",
           },
         },
       },
