@@ -88,6 +88,7 @@ module.exports = {
     "declaration-no-important": true,
 
     /* Selector */
+    "selector-class-pattern": null,
     "selector-max-attribute": 1,
     "selector-max-id": 1,
     "selector-max-universal": 1,

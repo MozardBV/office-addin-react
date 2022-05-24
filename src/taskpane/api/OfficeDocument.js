@@ -25,6 +25,7 @@ export default class OfficeDocument {
           const prop = context.document.properties.customProperties.getItemOrNullObject("mzdDocumentId");
           context.load(prop);
           await context.sync();
+          // eslint-disable-next-line office-addins/load-object-before-read
           if (!prop.isNullObject) {
             resolve(prop);
           } else {

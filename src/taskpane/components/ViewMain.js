@@ -78,7 +78,7 @@ function ViewMain() {
     setShowError(false);
   };
 
-  const sendFile = (event) => {
+  const sendFile = () => {
     setDocumentIdErrorMessage("");
     setDocumentNameErrorMessage("");
     setDocumentTypeErrorMessage("");
@@ -260,7 +260,7 @@ function ViewMain() {
           percentComplete: 0,
         });
       })
-      .catch((e) => {
+      .catch(() => {
         setDocumentIdFromDocument(false);
         setInitialized(true);
       });
