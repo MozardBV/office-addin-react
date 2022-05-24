@@ -43,7 +43,6 @@
     "source.fixAll.markdownlint": true
   },
   "eslint.validate": ["javascript", "javascriptreact", "typescript"],
-  "prettier.disableLanguages": [],
 
   // HTML
   "html.format.enable": false,
