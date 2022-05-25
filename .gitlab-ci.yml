@@ -36,6 +36,7 @@ deploy_production:
   stage: deploy
   script:
     - aws s3 cp ./dist s3://$S3_BUCKET_NAME_PROD/ --recursive
+    - echo "https://office.mozard.nl" > environment_url.txt
   environment:
     name: production
     url: https://office.mozard.nl
