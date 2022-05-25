@@ -38,69 +38,77 @@ export default class Middleware {
   }
 
   static async sendFile(progressCallback, errorCallback, userProperties, documentProperties) {
-    OfficeDocument.getFile(userProperties.platform, 65536).then((file) => {
-      progressCallback(undefined, `Bezig met ophalen bestand (${parseFloat(file.file.size / 1048576).toFixed(2)} MiB)`);
-
-      const boundary = Date.now().toString();
-
-      const submit = (data) => {
-        progressCallback(parseInt((file.counter / (file.sliceCount - 1)) * 100), "", "Bezig met verzenden");
-
-        axios
-          .post(
-            `/public/index.php?destdossier=${documentProperties.dossierId}&destdocnummer=${documentProperties.documentId}&destdoctype=${documentProperties.documentType}&destomgeving=${userProperties.env}`,
-            data,
-            {
-              headers: {
-                Authorization: `MOZTOKEN appcode=${userProperties.auth}`,
-                "Content-Type": `multipart/form-data; boundary="------------------------${boundary}"`,
-                "X-Moz-Slice": Number(file.counter),
-                "X-Moz-Slice-Index": Number(file.sliceCount) - 1,
-                "X-Moz-SliceHash": btoa(documentProperties.documentId + userProperties.env),
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            file.counter++;
-            if (file.counter < file.sliceCount) {
-              // Recursion!
-              // Outlook komt hier nooit, omdat die altijd maar 1 slice heeft.
-              // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              sendSlice();
-            } else {
-              if (userProperties.platform !== "Outlook") OfficeDocument.closeFile(file);
-              progressCallback(100, "", "Bestand verzonden!");
-            }
-          })
-          .catch((e) => {
-            errorCallback(e);
-            console.error(e);
-            throw new Error(e);
-          });
-      };
-
-      const sendSlice = () => {
-        OfficeDocument.getSlice(file).then((res) => {
-          const slice = OfficeDocument.formatSlice(documentProperties, res, boundary);
-
-          submit(slice.buffer);
-        });
-      };
-
-      if (userProperties.platform !== "Outlook") {
-        sendSlice();
-      } else {
-        const email = OfficeDocument.formatSlice(
-          documentProperties,
-          {
-            data: file.file,
-          },
-          boundary
+    OfficeDocument.getFile(userProperties.platform, 65536)
+      .then((file) => {
+        progressCallback(
+          undefined,
+          `Bezig met ophalen bestand (${parseFloat(file.file.size / 1048576).toFixed(2)} MiB)`
         );
 
-        submit(email);
-      }
-    });
+        const boundary = Date.now().toString();
+
+        const submit = (data) => {
+          progressCallback(parseInt((file.counter / (file.sliceCount - 1)) * 100), "", "Bezig met verzenden");
+
+          axios
+            .post(
+              `/public/index.php?destdossier=${documentProperties.dossierId}&destdocnummer=${documentProperties.documentId}&destdoctype=${documentProperties.documentType}&destomgeving=${userProperties.env}`,
+              data,
+              {
+                headers: {
+                  Authorization: `MOZTOKEN appcode=${userProperties.auth}`,
+                  "Content-Type": `multipart/form-data; boundary="------------------------${boundary}"`,
+                  "X-Moz-Slice": Number(file.counter),
+                  "X-Moz-Slice-Index": Number(file.sliceCount) - 1,
+                  "X-Moz-SliceHash": btoa(documentProperties.documentId + userProperties.env),
+                },
+              }
+            )
+            .then((res) => {
+              console.log(res);
+              file.counter++;
+              if (file.counter < file.sliceCount) {
+                // Recursion!
+                // Outlook komt hier nooit, omdat die altijd maar 1 slice heeft.
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                sendSlice();
+              } else {
+                if (userProperties.platform !== "Outlook") OfficeDocument.closeFile(file);
+                progressCallback(100, "", "Bestand verzonden!");
+              }
+            })
+            .catch((e) => {
+              errorCallback(e);
+              console.error(e);
+              throw new Error(e);
+            });
+        };
+
+        const sendSlice = () => {
+          OfficeDocument.getSlice(file).then((res) => {
+            const slice = OfficeDocument.formatSlice(documentProperties, res, boundary);
+
+            submit(slice.buffer);
+          });
+        };
+
+        if (userProperties.platform !== "Outlook") {
+          sendSlice();
+        } else {
+          const email = OfficeDocument.formatSlice(
+            documentProperties,
+            {
+              data: file.file,
+            },
+            boundary
+          );
+
+          submit(email);
+        }
+      })
+      .catch((e) => {
+        errorCallback(e);
+        console.error(e);
+      });
   }
 }

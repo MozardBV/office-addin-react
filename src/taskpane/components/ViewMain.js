@@ -23,6 +23,7 @@ import {
   Spinner,
   SpinnerSize,
   TextField,
+  MessageBar,
 } from "@fluentui/react";
 
 import Header from "./Header";
@@ -46,6 +47,7 @@ function ViewMain() {
   const [dossierId, setDossierId] = useState("");
   const [dossierIdErrorMessage, setDossierIdErrorMessage] = useState("");
   const [dossierIdFromUser, setDossierIdFromUser] = useState("");
+  const [dossierName, setDossierName] = useState("");
   const [initialized, setInitialized] = useState(false);
   const [platform, setPlatform] = useState("");
   const [progress, setProgress] = useState({
@@ -102,8 +104,14 @@ function ViewMain() {
     }
 
     if (documentName) {
-      const disallowedChars = ["\\", "*", '"', "<", ">", "|", "%", "^", "/"];
+      const maximumLength = 80;
+      const disallowedChars = [":", "\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
       const invalid = [];
+      const errorMsg = [];
+
+      if (documentName.length > maximumLength) {
+        errorMsg.push(`titel mag maximaal ${maximumLength} tekens groot zijn`);
+      }
 
       disallowedChars.forEach((char) => {
         if (documentName.includes(char)) {
@@ -112,8 +120,11 @@ function ViewMain() {
       });
 
       if (invalid.length > 0) {
-        console.log(invalid);
-        setDocumentNameErrorMessage(`Fout: ongeldige tekens in documentnaam (${invalid.join(", ")})`);
+        errorMsg.push(`ongeldige tekens in documentnaam (${invalid.join(", ")})`);
+      }
+
+      if (errorMsg.length > 0) {
+        setDocumentNameErrorMessage(`Fout: ${errorMsg.join(" én ")}`);
         return;
       }
     }
@@ -148,10 +159,14 @@ function ViewMain() {
           description: "",
           percentComplete: undefined,
         });
-        if (e.message === "Request failed with status code 401") {
-          setShowError("Geen privileges");
+        if (e.code === 5001) {
+          setShowError("Fout: Vanwege een fout bij Office is het niet mogelijk om een document te versturen");
+        } else if (e.message === "Request failed with status code 500") {
+          setShowError("Fout: Onbekend documentnummer");
+        } else if (e.message === "Request failed with status code 401") {
+          setShowError("Fout: Geen rechten voor dit document");
         } else {
-          setShowError("Onbekende fout opgetreden");
+          setShowError("Fout: Onbekende fout opgetreden");
         }
         setShowProgress(false);
       },
@@ -169,7 +184,16 @@ function ViewMain() {
       }
     );
   };
-
+  const formatNum = (num) => (num < 10 ? `0${num}` : num);
+  const getToday = () => {
+    const today = new Date();
+    const date = {
+      year: today.getFullYear(),
+      month: formatNum(today.getMonth() + 1),
+      day: formatNum(today.getDate()),
+    };
+    return Object.values(date).join("_");
+  };
   const submitNew = () => {
     setDossierIdErrorMessage("");
 
@@ -180,6 +204,19 @@ function ViewMain() {
 
     if (platform === "Outlook") {
       setDocumentName(OutlookMailbox.getSubject);
+    } else {
+      const today = getToday();
+      let docTitle = `${today}-`;
+      OfficeDocument.getDocumentTitle(platform)
+        .then((res) => {
+          docTitle += res;
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          setDocumentName(docTitle);
+        });
     }
 
     setDossierIdFromUser(true);
@@ -194,13 +231,23 @@ function ViewMain() {
       { dossierId }
     )
       .then((res) => {
+        const zaakNaam = res.data.moz_zk_weergavenaam;
+        if (Object.keys(zaakNaam).length > 0) {
+          setDossierName(zaakNaam);
+        }
         setDocumentId(res.data.moz_vnr_document);
         setResponseDocumentTypes(res.data.moz_vnr_documenttypen.moz_vnr_documenttype);
         setShowSelectDocumentType(true);
         setShowSpinner(false);
       })
       .catch((e) => {
-        setShowError("Fout: Geen privileges");
+        if (e.message === "Error: Request failed with status code 500") {
+          setShowError("Fout: Geen bestaande zaak");
+        } else if (e.message === "Request failed with status code 401") {
+          setShowError("Fout: Geen rechten voor deze zaak");
+        } else {
+          setShowError("Fout: Geen privileges");
+        }
         setShowProgress(false);
         setShowSpinner(false);
         console.error(e);
@@ -287,6 +334,11 @@ function ViewMain() {
             onClick={() => submitNew()}
             text="Verzenden als nieuw document"
           />
+          {dossierName && (
+            <div className="messagebar-dossiername">
+              <MessageBar>{dossierName}</MessageBar>
+            </div>
+          )}
           {!documentIdFromDocumentPrevious && !dossierIdFromUser && (
             <div>
               <hr className="mt-8 mb-4" />
