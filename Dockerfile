@@ -7,6 +7,8 @@ WORKDIR /build
 
 COPY package-lock.json package.json ./
 
+ENV NODE_OPTIONS=--no-experimental-fetch
+
 RUN npm ci
 
 COPY . .
