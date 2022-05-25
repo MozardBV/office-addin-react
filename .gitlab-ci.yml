@@ -39,3 +39,6 @@ deploy_production:
   environment:
     name: production
     url: https://office.mozard.nl
+  artifacts:
+    paths: [environment_url.txt]
+    when: always
