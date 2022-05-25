@@ -9,6 +9,7 @@ build:
     paths:
       - node_modules
   before_script:
+    - export NODE_OPTIONS=--no-experimental-fetch
     - apt-get update && apt-get install -y sudo && rm -rf /var/apt/lists/*
     - npm ci --legacy-peer-deps
   script:
@@ -35,6 +36,12 @@ deploy_production:
   stage: deploy
   script:
     - aws s3 cp ./dist s3://$S3_BUCKET_NAME_PROD/ --recursive
+    - echo "https://office.mozard.nl" > environment_url.txt
   environment:
     name: production
     url: https://office.mozard.nl
+  artifacts:
+    paths: [environment_url.txt]
+    when: always
+  only:
+    - main
