@@ -34,18 +34,16 @@ Zie ook: [Office add-in documentation](https://docs.microsoft.com/office/dev/add
 
 ### Afhankelijkheden
 
-- `nodejs` >= 14.2
+- NodeJS >= 16
 - Microsoft Office
 
 ### Installatie
 
-Clone dit git repository:
+Clone deze git repository:
 
 ```sh
-git clone git@gitlab.com:MozardBV/mozard-css.git
+git clone git@gitlab.com:MozardBV/office-addin-react.git
 ```
-
-Haal lokale node modules binnen. Let op, dit werkt niet met `yarn`, aangezien deze niet goed omgaat met CRLF line endings. Zie [GitHub Issue](https://github.com/OfficeDev/Office-Addin-Scripts/issues/168)
 
 ```sh
 npm install
@@ -145,6 +143,6 @@ Zie ook de lijst van [contributors](https://gitlab.com/mozardbv/office-addin-rea
 
 [SPDX](https://spdx.org/licenses/) license: `GPL-3.0-or-later`
 
-Copyright (c) 2006-2021 Mozard B.V.
+Copyright (c) 2006-2022 Mozard B.V.
 
 [Leveringsvoorwaarden](https://www.mozard.nl/mozard/!suite86.scherm0325?mPag=204&mLok=1)
