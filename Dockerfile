@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:16-bullseye
 
 LABEL Maintainer="Patrick Godschalk <p.godschalk@ienpm.nl>"
 LABEL Description "Integratie tussen het Mozard zaaksysteem en Microsoft Office"
@@ -6,8 +6,6 @@ LABEL Description "Integratie tussen het Mozard zaaksysteem en Microsoft Office"
 WORKDIR /build
 
 COPY package-lock.json package.json ./
-
-ENV NODE_OPTIONS=--no-experimental-fetch
 
 RUN npm ci
 
