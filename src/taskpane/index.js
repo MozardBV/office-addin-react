@@ -40,11 +40,11 @@ Sentry.init({
 
 const render = (Component) => {
   ReactDOM.render(
-    // Geen <React.StrictMode> omdat Fluent UI daar nog niet mee overweg kan.
-    // Zie: https://github.com/microsoft/fluentui/issues/4613
-    <AppContainer>
-      <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-    </AppContainer>,
+    <React.StrictMode>
+      <AppContainer>
+        <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+      </AppContainer>
+    </React.StrictMode>,
     document.getElementById("container")
   );
 };
