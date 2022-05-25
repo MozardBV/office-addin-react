@@ -50,11 +50,10 @@ const render = (Component) => {
 };
 
 /* Render application after Office initializes */
-// eslint-disable-next-line office-addins/no-office-initialize
-Office.initialize = () => {
+Office.onReady(() => {
   isOfficeInitialized = true;
   render(App);
-};
+});
 
 /* Initial render showing a progress bar */
 render(App);
