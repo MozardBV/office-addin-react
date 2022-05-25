@@ -11,7 +11,7 @@ RUN npm ci
 
 COPY . .
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 RUN apk add --update-cache nodejs \
   && rm -rf /var/cache/apk/*
