@@ -1,5 +1,5 @@
 // office-addin-react - Koppeling van Mozard met Microsoft Office
-// Copyright (C) 2021  Mozard BV
+// Copyright (C) 2021-2022  Mozard BV
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ module.exports = {
   jsxSingleQuote: true,
   trailingComma: "es5",
   bracketSpacing: true,
-  jsxBracketSameLine: false,
   arrowParens: "always",
   proseWrap: "never",
   htmlWhitespaceSensitivity: "strict",

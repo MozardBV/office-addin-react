@@ -1,5 +1,5 @@
 // office-addin-react - Koppeling van Mozard met Microsoft Office
-// Copyright (C) 2021  Mozard BV
+// Copyright (C) 2021-2022  Mozard BV
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ function ViewMain() {
     setShowError(false);
   };
 
-  const sendFile = (event) => {
+  const sendFile = () => {
     setDocumentIdErrorMessage("");
     setDocumentNameErrorMessage("");
     setDocumentTypeErrorMessage("");
@@ -307,7 +307,7 @@ function ViewMain() {
           percentComplete: 0,
         });
       })
-      .catch((e) => {
+      .catch(() => {
         setDocumentIdFromDocument(false);
         setInitialized(true);
       });

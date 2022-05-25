@@ -1,5 +1,5 @@
 // office-addin-react - Koppeling van Mozard met Microsoft Office
-// Copyright (C) 2021  Mozard BV
+// Copyright (C) 2021-2022  Mozard BV
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -88,6 +88,7 @@ module.exports = {
     "declaration-no-important": true,
 
     /* Selector */
+    "selector-class-pattern": null,
     "selector-max-attribute": 1,
     "selector-max-id": 1,
     "selector-max-universal": 1,

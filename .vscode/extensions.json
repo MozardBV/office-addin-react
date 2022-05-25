@@ -1,6 +1,6 @@
 {
   // office-addin-react - Koppeling van Mozard met Microsoft Office
-  // Copyright (C) 2021  Mozard BV
+  // Copyright (C) 2021-2022  Mozard BV
   //
   // This program is free software: you can redistribute it and/or modify
   // it under the terms of the GNU General Public License as published by
@@ -20,18 +20,16 @@
 
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
-    // Lint-on-save markdown in README files
-    // https://github.com/DavidAnson/vscode-markdownlint
+    "codezombiech.gitignore",
     "DavidAnson.vscode-markdownlint",
-    // Lint-on-save met ESLint
-    // https://github.com/microsoft/vscode-eslint
     "dbaeumer.vscode-eslint",
-    // Format-on-save met Prettier
-    // https://github.com/prettier/prettier-vscode
+    "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
-
-    // Lint-on-save met Stylelint
-    // https://github.com/stylelint/vscode-stylelint
-    "stylelint.vscode-stylelint"
+    "hashhar.gitattributes",
+    "gitlab.gitlab-workflow",
+    "mrmlnc.vscode-scss",
+    "msoffice.microsoft-office-add-in-debugger",
+    "stylelint.vscode-stylelint",
+    "webben.browserslist"
   ]
 }

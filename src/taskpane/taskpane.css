@@ -1,5 +1,5 @@
 /* office-addin-react - Koppeling van Mozard met Microsoft Office
- * Copyright (C) 2021  Mozard BV
+ * Copyright (C) 2021-2022  Mozard BV
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -631,18 +631,22 @@ hr::before {
     background-color: hsl(30, 3%, 29%);
     border-top-color: hsl(24, 3%, 35%);
   }
+
   .ms-CommandBarItem-link {
     color: hsl(220, 13%, 91%);
     background-color: hsl(30, 3%, 29%);
   }
+
   .ms-CommandBarItem-link:hover,
   .ms-CommandBarItem-link:focus {
     color: hsl(220, 13%, 91%);
     background-color: hsl(24, 3%, 35%);
   }
+
   .ms-CommandBarItem-link .ms-Icon {
     color: hsl(191, 100%, 37%);
   }
+
   .ms-CommandBarItem-link:hover .ms-Icon,
   .ms-CommandBarItem-link:focus .ms-Icon {
     color: hsl(191, 100%, 37%);

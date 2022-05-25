@@ -1,5 +1,5 @@
 # office-addin-react - Koppeling van Mozard met Microsoft Office
-# Copyright (C) 2021  Mozard BV
+# Copyright (C) 2021-2022  Mozard BV
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-### Common.gitattributes
 # Common settings that generally should always be used with your language specific settings
 
 # Auto detect text files and perform LF normalization
-# https://www.davidlaing.com/2012/09/19/customise-your-gitattributes-to-become-a-git-ninja/
 *          text=auto
 
 #
@@ -37,7 +35,8 @@
 *.PDF      diff=astextplain
 *.rtf      diff=astextplain
 *.RTF      diff=astextplain
-*.md       text
+*.md       text diff=markdown
+*.mdx      text diff=markdown
 *.tex      text diff=tex
 *.adoc     text
 *.textile  text
@@ -56,7 +55,7 @@
 *.tif      binary
 *.tiff     binary
 *.ico      binary
-# SVG treated as an asset (binary) by default.
+# SVG treated as text by default.
 *.svg      text
 # If you want to treat it as binary,
 # use the following line instead.
@@ -67,6 +66,7 @@
 *.bash     text eol=lf
 *.fish     text eol=lf
 *.sh       text eol=lf
+*.zsh      text eol=lf
 # These are explicitly windows files and should use crlf
 *.bat      text eol=crlf
 *.cmd      text eol=crlf
@@ -97,7 +97,6 @@
 .gitignore     export-ignore
 .gitkeep       export-ignore
 
-### Web.gitattributes
 ## GITATTRIBUTES FOR WEB PROJECTS
 #
 # These settings are for any web project.
@@ -120,7 +119,7 @@
 *.bat             text eol=crlf
 *.cmd             text eol=crlf
 *.coffee          text
-*.css             text
+*.css             text diff=css
 *.htm             text diff=html
 *.html            text diff=html
 *.inc             text
@@ -155,12 +154,12 @@ Dockerfile        text
 
 # Documentation
 *.ipynb           text
-*.markdown        text
-*.md              text
-*.mdwn            text
-*.mdown           text
-*.mkd             text
-*.mkdn            text
+*.markdown        text diff=markdown
+*.md              text diff=markdown
+*.mdwn            text diff=markdown
+*.mdown           text diff=markdown
+*.mkd             text diff=markdown
+*.mkdn            text diff=markdown
 *.mdtxt           text
 *.mdtext          text
 *.txt             text
@@ -182,6 +181,7 @@ TODO              text
 # Templates
 *.dot             text
 *.ejs             text
+*.erb             text
 *.haml            text
 *.handlebars      text
 *.hbs             text
@@ -191,6 +191,7 @@ TODO              text
 *.mustache        text
 *.njk             text
 *.phtml           text
+*.svelte          text
 *.tmpl            text
 *.tpl             text
 *.twig            text
@@ -206,7 +207,11 @@ TODO              text
 .gitconfig        text
 .htaccess         text
 *.lock            text -diff
+package.json      text eol=lf
 package-lock.json text -diff
+pnpm-lock.yaml    text eol=lf -diff
+.prettierrc       text
+yarn.lock         text -diff
 *.toml            text
 *.yaml            text
 *.yml             text
@@ -260,6 +265,7 @@ Procfile          text
 *.as              binary
 *.asf             binary
 *.asx             binary
+*.avi             binary
 *.fla             binary
 *.flv             binary
 *.m4v             binary
@@ -297,6 +303,3 @@ Procfile          text
 
 # Ignore files (like .npmignore or .gitignore)
 *.*ignore         text
-
-### Mozard.gitattributes
-.gitlab-ci.yml export-ignore

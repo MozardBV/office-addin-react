@@ -2,14 +2,25 @@
 <html lang="nl-NL" data-framework="javascript">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mozard Officeintegratie</title>
     <%= mode === 'development' ? '<!-- https://developer.microsoft.com/fabric -->' : '' %>
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"/>
     <%= mode === 'development' ? '<!-- Template styles -->' : '' %>
     <%= mode === 'development' ? '<script type="text/javascript" src="https://localhost:8097"></script>' : '' %>
     <%= mode === 'development' ? '<!-- Office JavaScript API -->' : '' %>
-
+    <script type="text/javascript">
+      window._historyCache = {
+        replaceState: window.history.replaceState,
+        pushState: window.history.pushState
+      };
+    </script>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Restore them
+      window.history.replaceState = window._historyCache.replaceState;
+      window.history.pushState = window._historyCache.pushState;
+    </script>
     <meta name="application-name" content="Mozard+Office">
     <meta name="theme-color" content="#faca17">
     <meta name="description" content="Integratie tussen het Mozard zaaksysteem en Microsoft Office">
@@ -37,18 +48,5 @@
   </head>
   <body class="ms-Fabric ms-font-m">
     <div id="container"></div>
-    <script type="text/javascript">
-      window._historyCache = {
-        replaceState: window.history.replaceState,
-        pushState: window.history.pushState
-      };
-    </script>
-
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-
-    <script type="text/javascript">
-      window.history.replaceState = window._historyCache.replaceState;
-      window.history.pushState = window._historyCache.pushState;
-    </script>
   </body>
 </html>
