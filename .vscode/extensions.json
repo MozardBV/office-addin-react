@@ -21,13 +21,14 @@
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
     "codezombiech.gitignore",
-    "DavidAnson.vscode-markdownlint",
+    "davidanson.vscode-markdownlint",
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "hashhar.gitattributes",
     "gitlab.gitlab-workflow",
     "mrmlnc.vscode-scss",
+    "ms-azuretools.vscode-docker",
     "msoffice.microsoft-office-add-in-debugger",
     "stylelint.vscode-stylelint",
     "webben.browserslist"
