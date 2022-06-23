@@ -14,3 +14,5 @@ services:
       - .:/home/node/code
       - ~/.office-addin-dev-certs:/home/node/.office-addin-dev-certs
     restart: on-failure:5
+    security_opt:
+      - no-new-privileges
