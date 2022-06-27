@@ -1,6 +1,21 @@
 ---
 include:
   - template: Auto-DevOps.gitlab-ci.yml
+build:
+  stage: build
+  image: node:18-bullseye
+  cache:
+    paths:
+      - node_modules
+  before_script:
+    - export NODE_OPTIONS=--no-experimental-fetch
+    - apt-get update && apt-get install -y sudo && rm -rf /var/apt/lists/*
+    - npm ci --legacy-peer-deps
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
 
 test_manifest:
   stage: test
