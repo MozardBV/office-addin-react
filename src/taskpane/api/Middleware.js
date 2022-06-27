@@ -32,7 +32,7 @@ export default class Middleware {
           resolve(res);
         })
         .catch((e) => {
-          reject(new Error(e));
+          reject(e);
         });
     });
   }
