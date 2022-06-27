@@ -110,7 +110,7 @@ function ViewMain() {
       const errorMsg = [];
 
       if (documentName.length > maximumLength) {
-        errorMsg.push(`titel mag maximaal ${maximumLength} tekens groot zijn`);
+        errorMsg.push(`documentnaam mag maximaal ${maximumLength} tekens groot zijn`);
       }
 
       disallowedChars.forEach((char) => {
