@@ -232,7 +232,7 @@ function ViewMain() {
     )
       .then((res) => {
         const zaakNaam = res.data.moz_zk_weergavenaam;
-        if (Object.keys(zaakNaam).length > 0) {
+        if (zaakNaam && Object.keys(zaakNaam).length > 0) {
           setDossierName(zaakNaam);
         }
         setDocumentId(res.data.moz_vnr_document);
