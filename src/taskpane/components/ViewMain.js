@@ -159,11 +159,12 @@ function ViewMain() {
           description: "",
           percentComplete: undefined,
         });
+        const statusCode = e.response.status;
         if (e.code === 5001) {
           setShowError("Fout: Vanwege een fout bij Office is het niet mogelijk om een document te versturen");
-        } else if (e.message === "Request failed with status code 500") {
+        } else if (statusCode === 500) {
           setShowError("Fout: Onbekend documentnummer");
-        } else if (e.message === "Request failed with status code 401") {
+        } else if (statusCode === 401) {
           setShowError("Fout: Geen rechten voor dit document");
         } else {
           setShowError("Fout: Onbekende fout opgetreden");
@@ -241,9 +242,10 @@ function ViewMain() {
         setShowSpinner(false);
       })
       .catch((e) => {
-        if (e.message === "Error: Request failed with status code 500") {
+        const statusCode = e.response.status;
+        if (statusCode === 500) {
           setShowError("Fout: Geen bestaande zaak");
-        } else if (e.message === "Request failed with status code 401") {
+        } else if (statusCode === 401) {
           setShowError("Fout: Geen rechten voor deze zaak");
         } else {
           setShowError("Fout: Geen privileges");
