@@ -54,9 +54,9 @@ module.exports = async (env, options) => {
     module: {
       rules: [
         {
-          test: /\.jsx?$/,
+          test: /\.(jsx|js|ts)?$/,
           use: ["react-hot-loader/webpack", "babel-loader"],
-          exclude: /node_modules/,
+          exclude: [/node_modules\/(?!(@sentry|file-type)\/).*/, /@babel(?:\/|\\{1,2})runtime|core-js/],
         },
         {
           test: /\.css$/,
