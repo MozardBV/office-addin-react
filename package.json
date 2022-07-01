@@ -46,7 +46,6 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "buffer": "^6.0.3",
     "@fluentui/react": "^8.77.3",
     "@sentry/react": "^7.3.1",
     "@sentry/tracing": "^7.3.1",

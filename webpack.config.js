@@ -43,9 +43,6 @@ module.exports = async (env, options) => {
       runtimeChunk: "single",
     },
     resolve: {
-      fallback: {
-        buffer: require.resolve("buffer/"),
-      },
       extensions: [".ts", ".tsx", ".html", ".js"],
       alias: {
         "react-dom": "@hot-loader/react-dom",
