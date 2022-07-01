@@ -51,7 +51,6 @@ module.exports = async (env, options) => {
               },
             },
           ],
-          exclude: [/node_modules\/(?!(@sentry|react-router)\/).*/, /@babel(?:\/|\\{1,2})runtime|core-js/],
         },
         {
           test: /\.css$/,
