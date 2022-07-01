@@ -16,8 +16,6 @@
 
 /* global Office */
 
-import { fileTypeFromBuffer } from "file-type";
-
 export default class OutlookMailbox {
   static getSubject() {
     const disallowedChars = [":", "\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
@@ -128,7 +126,7 @@ export default class OutlookMailbox {
           const unknownContentType = "application/octet-stream";
           switch (format) {
             case Office.MailboxEnums.AttachmentContentFormat.Base64: {
-              const mime = await fileTypeFromBuffer(Buffer.from(content, "base64"));
+              const mime = "application/octet-stream";
               headerValues.contentType = !mime ? unknownContentType : mime.mime;
               headerValues.contentTransferEncoding = "base64";
               break;

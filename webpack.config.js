@@ -15,11 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const devCerts = require("office-addin-dev-certs");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const path = require("path");
 const webpack = require("webpack");
 
 const urlDev = "https://localhost:3000";
@@ -27,53 +25,57 @@ const urlProd = "https://office.mozard.nl";
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
-  const buildType = dev ? "dev" : "prod";
   const config = {
     devtool: "source-map",
     entry: {
+      polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
-      polyfill: "babel-polyfill",
-      taskpane: ["react-hot-loader/patch", "./src/taskpane/index.js"],
+      taskpane: ["./src/taskpane/index.js"],
     },
     output: {
-      filename: "[name].[contenthash].js",
-      path: path.resolve(__dirname, "dist"),
-    },
-    optimization: {
-      runtimeChunk: "single",
+      devtoolModuleFilenameTemplate: "webpack:///[resource-path]?[loaders]",
+      clean: true,
     },
     resolve: {
       extensions: [".ts", ".tsx", ".html", ".js"],
-      alias: {
-        "react-dom": "@hot-loader/react-dom",
-      },
     },
     module: {
       rules: [
         {
           test: /\.jsx?$/,
-          use: ["react-hot-loader/webpack", "babel-loader"],
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                presets: ["@babel/preset-env"],
+              },
+            },
+          ],
+          exclude: [/node_modules\/(?!(@sentry|react-router)\/).*/, /@babel(?:\/|\\{1,2})runtime|core-js/],
         },
         {
           test: /\.css$/,
           use: ["style-loader", "css-loader"],
         },
         {
-          test: /\.(png|jpg|jpeg|gif)$/,
-          loader: "file-loader",
-          options: {
-            name: "[path][name].[ext]",
+          test: /\.(png|jpg|jpeg|gif|ico)$/,
+          type: "asset/resource",
+          generator: {
+            filename: "assets/[name][ext][query]",
           },
         },
       ],
     },
     plugins: [
-      new CleanWebpackPlugin(),
       new CopyWebpackPlugin({
         patterns: [
           {
-            to: "[name]." + buildType + "[ext]",
+            from: "assets/*",
+            to: "assets/[name][ext][query]",
+          },
+          {
             from: "manifest*.xml",
+            to: "[name]" + "[ext]",
             transform(content) {
               if (dev) {
                 return content;
@@ -82,14 +84,7 @@ module.exports = async (env, options) => {
               }
             },
           },
-          {
-            to: "assets",
-            from: "assets",
-          },
         ],
-      }),
-      new MiniCssExtractPlugin({
-        filename: "[name].[contenthash].css",
       }),
       new HtmlWebpackPlugin({
         filename: "index.html",
@@ -99,29 +94,17 @@ module.exports = async (env, options) => {
         },
         chunks: ["taskpane", "vendor", "polyfill"],
       }),
-      new webpack.ProvidePlugin({
-        Buffer: ["buffer", "Buffer"],
-        Promise: ["es6-promise", "Promise"],
+      new MiniCssExtractPlugin({
+        filename: "[name].[contenthash].css",
       }),
-      new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
-        const mod = resource.request.replace(/^node:/, "");
-        switch (mod) {
-          case "buffer":
-            resource.request = "buffer";
-            break;
-          case "stream":
-            resource.request = "readable-stream";
-            break;
-          default:
-            throw new Error(`Not found ${mod}`);
-        }
+      new webpack.ProvidePlugin({
+        Promise: ["es6-promise", "Promise"],
       }),
     ],
     devServer: {
       devMiddleware: {
         publicPath: "/",
       },
-      hot: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",

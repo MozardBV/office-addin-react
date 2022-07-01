@@ -18,7 +18,6 @@
 import "@fluentui/react";
 import "./taskpane.css";
 import App from "./components/App";
-import { AppContainer } from "react-hot-loader";
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -41,9 +40,7 @@ Sentry.init({
 const render = (Component) => {
   ReactDOM.render(
     <React.StrictMode>
-      <AppContainer>
-        <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-      </AppContainer>
+      <Component title={title} isOfficeInitialized={isOfficeInitialized} />
     </React.StrictMode>,
     document.getElementById("container")
   );
