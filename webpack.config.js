@@ -51,6 +51,7 @@ module.exports = async (env, options) => {
               },
             },
           ],
+          exclude: [/node_modules[\\/]core-js/, /node_modules[\\/]webpack[\\/]buildin/],
         },
         {
           test: /\.css$/,

@@ -25,11 +25,11 @@ module.exports = {
     "plugin:import/errors",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:office-addins/recommended",
-    "plugin:office-addins/react",
+    //"plugin:office-addins/recommended",
+    //"plugin:office-addins/react",
     "prettier",
   ],
-  plugins: ["react", "import", "jsx-a11y", "react-hooks", "@typescript-eslint", "office-addins"],
+  plugins: ["react", "import", "jsx-a11y", "react-hooks", "@typescript-eslint"], // "office-addins tijdelijk uit
   parserOptions: {
     sourceType: "script",
   },

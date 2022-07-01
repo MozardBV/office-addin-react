@@ -26,8 +26,6 @@ export default class OfficeDocument {
           const prop = context.document.properties.customProperties.getItemOrNullObject("mzdDocumentId");
           context.load(prop);
           await context.sync();
-          // Office laad automatisch "isNullObject" foo.load('isNullObject') is dus niet nodig
-          // eslint-disable-next-line office-addins/load-object-before-read
           if (!prop.isNullObject) {
             resolve(prop);
           } else {
@@ -97,8 +95,6 @@ export default class OfficeDocument {
             const valueRange = firstSheet.getUsedRangeOrNullObject(true);
             valueRange.load("text");
             await context.sync();
-            // Office laad automatisch "isNullObject" foo.load('isNullObject') is dus niet nodig
-            // eslint-disable-next-line office-addins/load-object-before-read
             if (valueRange.isNullObject) {
               reject("Document bevat geen waardes");
               return;

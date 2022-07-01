@@ -123,9 +123,5 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3"
   },
-  "engines": {
-    "node": ">=14 <17",
-    "npm": ">=6 <9"
-  },
   "prettier": "office-addin-prettier-config"
 }
