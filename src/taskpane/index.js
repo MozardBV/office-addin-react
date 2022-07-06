@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 /* global Office */
+import "react-app-polyfill/ie11";
 import "@fluentui/react";
 import "./taskpane.css";
 import App from "./components/App";
