@@ -62,9 +62,8 @@ export default class OutlookMailbox {
                   let attachmentHeaders = `--${boundary}\r\n`;
                   attachmentHeaders += headers.join("\r\n");
                   attachmentHeaders += "\r\n\r\n";
-                  // !! check of "body" een string is en of het goed geparsed wordt
-                  // const splitBody = this.addLineBreaks(body, 76);
-                  return attachmentHeaders.concat(body); // (splitBody)
+                  const splitBody = this.addLineBreaks(body, 76);
+                  return attachmentHeaders.concat(splitBody);
                 });
                 const allAttachments = attachmentsArr.join("\r\n");
                 eml = eml.concat("\r\n", allAttachments);
@@ -92,7 +91,6 @@ export default class OutlookMailbox {
     for (let i = 0; i < str.length; i += n) {
       arr.push(str.substring(i, i + n));
     }
-    // !! Check of het \r\n of \n moet zijn
     return arr.join("\r\n");
   }
 
