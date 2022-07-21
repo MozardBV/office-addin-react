@@ -3,7 +3,7 @@ include:
   - template: Auto-DevOps.gitlab-ci.yml
 build:
   stage: build
-  image: node:18-bullseye
+  image: node:16-bullseye
   cache:
     paths:
       - node_modules
@@ -19,7 +19,7 @@ build:
 
 test_manifest:
   stage: test
-  image: node:18-bullseye
+  image: node:16-bullseye
   cache:
     paths:
       - node_modules/

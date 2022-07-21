@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:16-bullseye
 
 LABEL Maintainer="Patrick Godschalk <p.godschalk@ienpm.nl>"
 LABEL Description "Integratie tussen het Mozard zaaksysteem en Microsoft Office"
@@ -11,7 +11,7 @@ RUN npm ci
 
 COPY . .
 
-FROM alpine:3.16
+FROM alpine:3.16.1
 
 RUN apk add --update-cache nodejs \
   && rm -rf /var/cache/apk/*
