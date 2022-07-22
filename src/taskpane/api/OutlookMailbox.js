@@ -48,7 +48,7 @@ export default class OutlookMailbox {
           const arr1 = arr.slice(0, indexContentType);
           const arr2 = arr.slice(indexNextHeader);
           headers = arr1.concat(arr2).join("\n");
-          headers += `Content-type: multipart/alternative; boundary="${boundary}"\r\n`;
+          headers += `Content-type: multipart/mixed; boundary="${boundary}"\r\n`;
           headers += "\r\n";
           const attachmentContents = await this.getAttachments();
           Promise.all([this.getEmailAsText(boundary), this.getEmailAsHTML(boundary)])
@@ -61,7 +61,8 @@ export default class OutlookMailbox {
                   let attachmentHeaders = `--${boundary}\r\n`;
                   attachmentHeaders += headers.join("\r\n");
                   attachmentHeaders += "\r\n\r\n";
-                  return attachmentHeaders.concat(body);
+                  const splitBody = this.addLineBreaks(body, 76);
+                  return attachmentHeaders.concat(splitBody);
                 });
                 const allAttachments = attachmentsArr.join("\r\n");
                 eml = eml.concat("\r\n", allAttachments);
@@ -84,6 +85,14 @@ export default class OutlookMailbox {
   }
 
   /** In principe "private" members */
+  static addLineBreaks(str, n) {
+    const arr = [];
+    for (let i = 0; i < str.length; i += n) {
+      arr.push(str.substring(i, i + n));
+    }
+    return arr.join("\r\n");
+  }
+
   static getAttachments() {
     return new Office.Promise((resolve, reject) => {
       const attachments = Office.context.mailbox.item.attachments;
@@ -125,8 +134,9 @@ export default class OutlookMailbox {
           const unknownContentType = "application/octet-stream";
           switch (format) {
             case Office.MailboxEnums.AttachmentContentFormat.Base64: {
-              const mime = "application/octet-stream";
-              headerValues.contentType = !mime ? unknownContentType : mime.mime;
+              // const mime = "application/octet-stream";
+              // headerValues.contentType = !mime ? unknownContentType : mime.mime;
+              headerValues.contentType = unknownContentType;
               headerValues.contentTransferEncoding = "base64";
               break;
             }
