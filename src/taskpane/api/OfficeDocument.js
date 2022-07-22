@@ -42,7 +42,7 @@ export default class OfficeDocument {
     const removeDisallowedChars = (textArr) => {
       let res;
       for (let i = 0; i < textArr.length; i++) {
-        const t = textArr[i]; // nosemgrep
+        const t = textArr.at(i);
         const textLength = t.length;
         const maxLength = 80;
         const prefixLength = "YYYY_MM_DD-".length;
