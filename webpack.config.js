@@ -20,9 +20,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 
-const urlDev = "https://localhost:3000";
-const urlProd = "https://office.mozard.nl";
-
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
   const config = {
@@ -80,7 +77,7 @@ module.exports = async (env, options) => {
               if (dev) {
                 return content;
               } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
+                return content.toString().replace(/https:\/\/localhost:3000/g, "https://office.mozard.nl");
               }
             },
           },
