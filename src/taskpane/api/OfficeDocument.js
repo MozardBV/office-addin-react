@@ -42,7 +42,7 @@ export default class OfficeDocument {
     const removeDisallowedChars = (textArr) => {
       let res;
       for (let i = 0; i < textArr.length; i++) {
-        const t = textArr[i];
+        const t = textArr[i]; // nosemgrep
         const textLength = t.length;
         const maxLength = 80;
         const prefixLength = "YYYY_MM_DD-".length;
@@ -208,7 +208,7 @@ export default class OfficeDocument {
       const byteNumbers = new Array(byteCharacters.length);
 
       for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+        byteNumbers[i] = byteCharacters.charCodeAt(i); // nosemgrep
       }
 
       // Omzetten naar een echte byte array met de juiste type. (Oftewel,
@@ -224,17 +224,17 @@ export default class OfficeDocument {
 
         // Het begin van de request toevoegen
         for (i = 0; i < requestBodyBeginning.length; i++) {
-          uint8array[i] = requestBodyBeginning.charCodeAt(i) & 0xff;
+          uint8array[i] = requestBodyBeginning.charCodeAt(i) & 0xff; // nosemgrep
         }
 
         // De binary attachment toevoegen
         for (let j = 0; j < byteArray.byteLength; i++, j++) {
-          uint8array[i] = byteArray[j];
+          uint8array[i] = byteArray[j]; // nosemgrep
         }
 
         // Het eind van de request toevoegen
         for (let j = 0; j < requestBodyEnd.length; i++, j++) {
-          uint8array[i] = requestBodyEnd.charCodeAt(j) & 0xff;
+          uint8array[i] = requestBodyEnd.charCodeAt(j) & 0xff; // nosemgrep
         }
       }
 
