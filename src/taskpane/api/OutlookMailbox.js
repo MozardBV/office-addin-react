@@ -18,10 +18,9 @@
 
 export default class OutlookMailbox {
   static getSubject() {
-    const disallowedChars = [":", "\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
     const subject = Office.context.mailbox.item.subject;
-    const regex = new RegExp(`[${disallowedChars.join("")}]`, "g");
-    const cleanSubject = subject.replace(regex, "");
+    const disallowedChars = /[:*"<>|%^/”“]/g;
+    const cleanSubject = subject.replace(disallowedChars, "");
     return cleanSubject;
   }
 

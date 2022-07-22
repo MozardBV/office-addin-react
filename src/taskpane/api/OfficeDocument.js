@@ -49,9 +49,8 @@ export default class OfficeDocument {
         const max = maxLength - prefixLength;
         const end = textLength < max ? textLength : max;
         const firstChars = t.substring(0, end);
-        const disallowedChars = [":", "\\", "*", '"', "<", ">", "|", "%", "^", "/", "”", "“"];
-        const regex = new RegExp(`[${disallowedChars.join("")}]`, "g");
-        const tText = firstChars.replace(regex, "");
+        const disallowedChars = /[:*"<>|%^/”“]/g;
+        const tText = firstChars.replace(disallowedChars, "");
         if (tText) {
           res = tText;
           break;
