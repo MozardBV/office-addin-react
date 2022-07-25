@@ -159,8 +159,8 @@ function ViewMain() {
           description: "",
           percentComplete: undefined,
         });
-        const statusCode = e.response.status;
-        if (e.code === 5001) {
+        const statusCode = e.response ? e.response.status : e.code;
+        if (statusCode === 5001) {
           setShowError("Fout: Vanwege een fout bij Office is het niet mogelijk om een document te versturen");
         } else if (statusCode === 500) {
           setShowError("Fout: Onbekend documentnummer");
