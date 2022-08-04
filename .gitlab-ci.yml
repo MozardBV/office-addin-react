@@ -42,5 +42,5 @@ deploy_production:
   artifacts:
     paths: [environment_url.txt]
     when: always
-  only:
-    - main
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
