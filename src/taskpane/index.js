@@ -21,7 +21,7 @@ import "./taskpane.css";
 import App from "./components/App";
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 
@@ -38,27 +38,34 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-const render = (Component) => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-    </React.StrictMode>,
-    document.getElementById("container")
-  );
-};
+const container = document.getElementById("container");
+const root = createRoot(container);
 
 /* Render application after Office initializes */
 Office.onReady(() => {
   isOfficeInitialized = true;
-  render(App);
+  root.render(
+    <React.StrictMode>
+      <App title={title} isOfficeInitialized={isOfficeInitialized} />
+    </React.StrictMode>
+  );
 });
 
 /* Initial render showing a progress bar */
-render(App);
+root.render(
+  <React.StrictMode>
+    <App title={title} isOfficeInitialized={isOfficeInitialized} />
+  </React.StrictMode>
+);
 
 if (module.hot) {
   module.hot.accept("./components/App", () => {
     const NextApp = require("./components/App").default;
-    render(NextApp);
+
+    root.render(
+      <React.StrictMode>
+        <NextApp title={title} isOfficeInitialized={isOfficeInitialized} />
+      </React.StrictMode>
+    );
   });
 }
