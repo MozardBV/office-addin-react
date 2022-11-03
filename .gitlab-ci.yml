@@ -3,14 +3,13 @@ include:
   - template: Auto-DevOps.gitlab-ci.yml
 build:
   stage: build
-  image: node:16-bullseye
+  image: node:18-bullseye
   cache:
     paths:
       - node_modules
   before_script:
-    - export NODE_OPTIONS=--no-experimental-fetch
     - apt-get update && apt-get install -y sudo && rm -rf /var/apt/lists/*
-    - npm ci --legacy-peer-deps
+    - npm ci
   script:
     - npm run build
   artifacts:
@@ -19,12 +18,12 @@ build:
 
 test_manifest:
   stage: test
-  image: node:16-bullseye
+  image: node:18-bullseye
   cache:
     paths:
       - node_modules/
   before_script:
-    - npm ci --legacy-peer-deps
+    - npm ci
   script:
     - npm run validate
     - cat manifest.outlook.xml > manifest.xml
