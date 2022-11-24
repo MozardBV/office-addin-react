@@ -1,6 +1,6 @@
 FROM node:18-bullseye
 
-LABEL Maintainer="Patrick Godschalk <p.godschalk@ienpm.nl>"
+LABEL Maintainer="Marten de Bruijn <m.debruijn@ienpm.nl>"
 LABEL Description "Integratie tussen het Mozard zaaksysteem en Microsoft Office"
 
 WORKDIR /build
