@@ -6,9 +6,9 @@
   xsi:type="TaskPaneApp">
   <Id>08829ff5-3bf5-4305-b5d5-9381946ecb71</Id>
   <Version>3.0.0.0</Version>
-  <ProviderName>Mozard</ProviderName>
+  <ProviderName>Mozard Suite</ProviderName>
   <DefaultLocale>nl-NL</DefaultLocale>
-  <DisplayName DefaultValue="Mozard"/>
+  <DisplayName DefaultValue="Mozard Suite"/>
   <Description DefaultValue="Integratie tussen het Mozard zaaksysteem en Microsoft Office"/>
   <IconUrl DefaultValue="https://office.mozard.nl/assets/icon32.png"/>
   <HighResolutionIconUrl DefaultValue="https://office.mozard.nl/assets/icon64.png"/>

@@ -6,9 +6,9 @@
   xsi:type="MailApp">
   <Id>d496bde5-b74c-4be1-808b-f398c0738382</Id>
   <Version>3.0.0.0</Version>
-  <ProviderName>Mozard</ProviderName>
+  <ProviderName>Mozard Suite</ProviderName>
   <DefaultLocale>nl-NL</DefaultLocale>
-  <DisplayName DefaultValue="Mozard for Outlook"/>
+  <DisplayName DefaultValue="Mozard Suite for Outlook"/>
   <Description DefaultValue="Integratie tussen het Mozard zaaksysteem en Microsoft Outlook"/>
   <IconUrl DefaultValue="https://office.mozard.nl/assets/icon32.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon128.png"/>
