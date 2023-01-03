@@ -22,8 +22,8 @@ import App from "./components/App";
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
+// import * as Sentry from "@sentry/react";
+// import { Integrations } from "@sentry/tracing";
 
 initializeIcons();
 
@@ -31,12 +31,12 @@ let isOfficeInitialized = false;
 
 const title = "Mozard";
 
-Sentry.init({
-  dsn: "https://71ac0bb66a8a4bba92810228e8597ad3@o495609.ingest.sentry.io/5578600",
-  autoSessionTracking: true,
-  integrations: [new Integrations.BrowserTracing()],
-  tracesSampleRate: 1.0,
-});
+// Sentry.init({
+//   dsn: "https://71ac0bb66a8a4bba92810228e8597ad3@o495609.ingest.sentry.io/5578600",
+//   autoSessionTracking: true,
+//   integrations: [new Integrations.BrowserTracing()],
+//   tracesSampleRate: 1.0,
+// });
 
 const container = document.getElementById("container");
 const root = createRoot(container);

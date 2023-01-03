@@ -25,9 +25,6 @@
   "files.trimFinalNewlines": true,
 
   // Files
-  "files.exclude": {
-    "**/dist": true
-  },
   "files.associations": {
     ".markdownlintrc": "jsonc",
     "**/components/*.js": "javascriptreact",

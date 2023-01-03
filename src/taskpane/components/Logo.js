@@ -16,7 +16,6 @@
 
 import React from "react";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 
 const StyledLogo = styled.div`
   width: 100px;
@@ -27,8 +26,8 @@ const StyledLogo = styled.div`
 `;
 
 function Logo() {
-  const _descId = uuidv4();
-  const _titleId = uuidv4();
+  const _descId = "logo-desc-id";
+  const _titleId = "logo-title-id";
 
   return (
     <StyledLogo>
