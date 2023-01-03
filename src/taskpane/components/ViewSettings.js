@@ -16,17 +16,16 @@
 
 import React, { useEffect, useState } from "react";
 import { TooltipHost, DefaultButton, TextField } from "@fluentui/react";
-import { v4 as uuidv4 } from "uuid";
 
 import Header from "./Header";
 
 function ViewSettings() {
   const [auth, setAuth] = useState("");
   const [authErrorMessage, setAuthErrorMessage] = useState("");
-  const [authId] = useState(uuidv4());
+  const [authId] = useState("auth-id");
   const [env, setEnv] = useState("");
   const [envErrorMessage, setEnvErrorMessage] = useState("");
-  const [envId] = useState(uuidv4());
+  const [envId] = useState("env-id");
   const [showSuccess, setShowSuccess] = useState("");
 
   const deleteFnvb = () => {
