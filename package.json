@@ -19,6 +19,7 @@
   "license": "GPL-3.0-or-later",
   "author": "Mozard BV",
   "contributors": [
+    "Marten de Bruijn <marten@debruijn.io>",
     "Patrick Godschalk <p.godschalk@ienpm.nl>"
   ],
   "repository": {

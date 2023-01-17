@@ -211,13 +211,16 @@ function ViewMain() {
       OfficeDocument.getDocumentTitle(platform)
         .then((res) => {
           docTitle += res;
+          setDocumentName(docTitle);
         })
         .catch((e) => {
           console.log(e);
-        })
-        .finally(() => {
           setDocumentName(docTitle);
         });
+      // Zet dit terug als de DCMR eindelijk naar een niet IE11 versie van Office gaat
+      // .finally(() => {
+      //   setDocumentName(docTitle);
+      // });
     }
 
     setDossierIdFromUser(true);
