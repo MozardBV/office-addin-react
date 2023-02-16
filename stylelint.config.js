@@ -22,9 +22,6 @@ module.exports = {
     // Standaardvolgorde van CSS properties
     // https://github.com/stormwarning/stylelint-config-recess-order
     "stylelint-config-recess-order",
-    // Override rules die conflicteren met Prettier
-    // https://github.com/shannonmoeller/stylelint-config-prettier
-    "stylelint-config-prettier",
     // Override rules voor linten van CSS modules
     // https://github.com/pascalduez/stylelint-config-css-modules
     "stylelint-config-css-modules",
