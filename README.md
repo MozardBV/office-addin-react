@@ -144,7 +144,8 @@ Gebruikt [SemVer](https://semver.org/).
 
 ## Auteurs
 
-- **Patrick Godschalk (Mozard)** - _Ontwikkelaar_ - [pgodschalk](https://gitlab.com/pgodschalk)
+- **Marten de Bruijn (Mozard)** - _Maintainer_ - [martendebruijn](https://gitlab.com/martendebruijn)
+- **Patrick Godschalk** - _Ontwikkelaar_ - [pgodschalk](https://gitlab.com/pgodschalk)
 
 Zie ook de lijst van [contributors](https://gitlab.com/mozardbv/office-addin-react/-/graphs/main) die hebben bijgedragen aan dit project.
 
@@ -152,6 +153,6 @@ Zie ook de lijst van [contributors](https://gitlab.com/mozardbv/office-addin-rea
 
 [SPDX](https://spdx.org/licenses/) license: `GPL-3.0-or-later`
 
-Copyright (c) 2006-2022 Mozard B.V.
+Copyright (c) 2006-2023 Mozard B.V.
 
 [Leveringsvoorwaarden](https://www.mozard.nl/mozard/!suite86.scherm0325?mPag=204&mLok=1)
